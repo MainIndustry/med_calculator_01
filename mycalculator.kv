@@ -1,0 +1,662 @@
+#: import NoTransition kivy.uix.screenmanager.NoTransition
+
+MDScreen:
+    md_bg_color: self.theme_cls.secondaryContainerColor
+
+    MDNavigationLayout:
+
+        MDScreenManager:
+            id: nav_manager
+
+            ScreenCalculator:
+
+            ScreenSettings:
+
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            radius: 0, dp(16), dp(16), 0
+
+            MDNavigationDrawerMenu:
+
+                MDNavigationDrawerLabel:
+                    text: "Меню"
+                    padding: "18dp", 0, "18dp", "4dp"
+                    font_style: "Title"
+
+
+                MDNavigationDrawerDivider:
+
+                MDNavigationDrawerItem:
+                    on_release: nav_manager.current = 'menu'
+                    #nav_manager.transition = NoTransition() ;
+                    MDNavigationDrawerItemLeadingIcon:
+                        icon: "calculator"
+                    MDNavigationDrawerItemText:
+                        text: "Калькуляторы"
+                MDNavigationDrawerItem:
+                    on_release: nav_manager.current = 'settings'
+                    MDNavigationDrawerItemLeadingIcon:
+                        icon: "cog"
+                    MDNavigationDrawerItemText:
+                        text: "Настройки"
+
+                MDNavigationDrawerDivider:
+
+
+<TopMenu@MDTopAppBar>:
+    type: "small"
+    #size_hint_x: 1
+    #pos_hint: {"top": 1}
+    MDTopAppBarLeadingButtonContainer:
+        MDActionTopAppBarButton:
+            icon: "menu"
+            on_release: app.open_menu()
+    MDTopAppBarTitle:
+        text: "Медицинский калькулятор"
+        pos_hint: {"center_x": .5}
+
+<ScreenCalculator@MDScreen>:
+    name: "menu"
+    MDScreenManager:
+        id: menu_manager
+
+        MDScreen:
+            name: 'calculator'
+            MDBoxLayout:
+                orientation: 'vertical'
+
+                TopMenu:
+
+                ScrollView:
+                    GridLayout:
+                        spacing: "10dp"
+                        padding: "20dp"
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_width: 100
+
+                        MDButton:
+                            on_release: menu_manager.current = "silverman"
+                            MDButtonText:
+                                text: "Шкала Сильвермана"
+                        MDButton:
+                            on_release: menu_manager.current = "downes"
+                            MDButtonText:
+                                text: "Шкала Даунса"
+                        MDButton:
+                            on_release: menu_manager.current = "ballard"
+                            MDButtonText:
+                                text: "Шкала Балларда"
+                        MDButton:
+                            MDButtonText:
+                                text: "Шкала4"
+
+
+                MDTopAppBar:
+                    type: "small"
+                    size_hint_y: .2
+                    #pos_hint: {"bottom": 1}
+                    MDTopAppBarLeadingButtonContainer:
+                        MDActionTopAppBarButton:
+                            icon: "magnify"
+                    MDTopAppBarTitle:
+                        text: "Поиск..."
+
+        ScreenSilverman:
+        ScreenDownes:
+        ScreenBallard:
+
+<ScreenSettings@MDScreen>:
+    name: 'settings'
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        TopMenu:
+
+        ScrollView:
+            MDLabel:
+                text:"Screen 2"
+
+        MDTopAppBar:
+            type: "small"
+
+
+<TopMenu2@MDTopAppBar>:
+    size_hint_y: .2
+    MDTopAppBarLeadingButtonContainer:
+        MDActionTopAppBarButton:
+            icon: "arrow-left"
+            on_press: app.back_to_menu()
+            #menu_manager.current = "calculator"
+    MDTopAppBarTitle:
+        text: "Медицинский калькулятор"
+        pos_hint: {"center_x": .5}
+    MDTopAppBarTrailingButtonContainer:
+        MDActionTopAppBarButton:
+            #icon: "dots-vertical"
+
+<ListMenu@MDBoxLayout>
+    orientation: "vertical"
+    adaptive_height: True
+    padding: "12dp", "6dp", "12dp", 0
+    spacing: "12dp"
+
+<MDListItemTrailingCheckbox>:
+    radio_icon_normal: "checkbox-blank-outline"
+    radio_icon_down: "checkbox-marked"
+
+
+<ScreenSilverman@MDScreen>:
+    name: "silverman"
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            MDGridLayout:
+                padding: "12dp", "36dp", "12dp", "12dp"
+                spacing: "12dp"
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_width: 100
+
+                MDLabel:
+                    text: "Шкала Сильвермана"
+                    font_style: "Headline"
+                    padding: 0, 0, 0, "24dp"
+
+                ListMenu:
+                    MDLabel:
+                        text: "Движение грудной клетки"
+                    MDList:
+                        MDListItem:
+                            on_release: silverman11.state = "down" if silverman11.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Грудь и живот равномерно участвуют в акте дыхания"
+                            MDListItemTrailingCheckbox:
+                                id: silverman11
+                                on_release: silverman11.state = "down" if silverman11.state == "normal" else "normal"
+                                group: 'silver1'
+                        MDListItem:
+                            on_release: silverman12.state = "down" if silverman12.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Аритмичное, неравномерное дыхание"
+                            MDListItemTrailingCheckbox:
+                                id: silverman12
+                                on_release: silverman12.state = "down" if silverman12.state == "normal" else "normal"
+                                group: 'silver1'
+                        MDListItem:
+                            on_release: silverman13.state = "down" if silverman13.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Парадоксальное дыхание"
+                            MDListItemTrailingCheckbox:
+                                id: silverman13
+                                on_release: silverman13.state = "down" if silverman13.state == "normal" else "normal"
+                                group: 'silver1'
+
+
+                ListMenu:
+                    MDLabel:
+                        text: "Втяжение межреберий"
+                    MDList:
+                        MDListItem:
+                            on_release: silverman21.state = "down" if silverman21.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Нет"
+                            MDListItemTrailingCheckbox:
+                                id: silverman21
+                                on_release: silverman21.state = "down" if silverman21.state == "normal" else "normal"
+                                group: 'silver2'
+                        MDListItem:
+                            on_release: silverman22.state = "down" if silverman22.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Не резко выражено"
+                            MDListItemTrailingCheckbox:
+                                id: silverman22
+                                on_release: silverman22.state = "down" if silverman22.state == "normal" else "normal"
+                                group: 'silver2'
+                        MDListItem:
+                            on_release: silverman23.state = "down" if silverman23.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Резко выражено"
+                            MDListItemTrailingCheckbox:
+                                id: silverman23
+                                on_release: silverman23.state = "down" if silverman23.state == "normal" else "normal"
+                                group: 'silver2'
+
+                ListMenu:
+                    MDLabel:
+                        text: "Втяжение грудины"
+                    MDList:
+                        MDListItem:
+                            on_release: silverman31.state = "down" if silverman31.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Нет"
+                            MDListItemTrailingCheckbox:
+                                id: silverman31
+                                on_release: silverman31.state = "down" if silverman31.state == "normal" else "normal"
+                                group: 'silver3'
+                        MDListItem:
+                            on_release: silverman32.state = "down" if silverman32.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Не резко выражено"
+                            MDListItemTrailingCheckbox:
+                                id: silverman32
+                                on_release: silverman32.state = "down" if silverman32.state == "normal" else "normal"
+                                group: 'silver3'
+                        MDListItem:
+                            on_release: silverman33.state = "down" if silverman33.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Резко выражено"
+                            MDListItemTrailingCheckbox:
+                                id: silverman33
+                                on_release: silverman33.state = "down" if silverman33.state == "normal" else "normal"
+                                group: 'silver3'
+
+                ListMenu:
+                    MDLabel:
+                        text: "Положение нижней челюсти"
+                    MDList:
+                        MDListItem:
+                            on_release: silverman41.state = "down" if silverman41.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Рот закрыт, нижняя челюсть не западает"
+                            MDListItemTrailingCheckbox:
+                                id: silverman41
+                                on_release: silverman41.state = "down" if silverman41.state == "normal" else "normal"
+                                group: 'silver4'
+                        MDListItem:
+                            on_release: silverman42.state = "down" if silverman42.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Рот закрыт, нижняя челюсть западает"
+                            MDListItemTrailingCheckbox:
+                                id: silverman42
+                                on_release: silverman42.state = "down" if silverman42.state == "normal" else "normal"
+                                group: 'silver4'
+                        MDListItem:
+                            on_release: silverman43.state = "down" if silverman43.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Рот открыт, челюсть западает"
+                            MDListItemTrailingCheckbox:
+                                id: silverman43
+                                on_release: silverman43.state = "down" if silverman43.state == "normal" else "normal"
+                                group: 'silver4'
+
+                ListMenu:
+                    MDLabel:
+                        text: "Дыхание"
+                    MDList:
+                        MDListItem:
+                            on_release: silverman51.state = "down" if silverman51.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Спокойное, ровное"
+                            MDListItemTrailingCheckbox:
+                                id: silverman51
+                                on_release: silverman51.state = "down" if silverman51.state == "normal" else "normal"
+                                group: 'silver5'
+                        MDListItem:
+                            on_release: silverman52.state = "down" if silverman52.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "При аускультации слышен затрудненный выдох"
+                            MDListItemTrailingCheckbox:
+                                id: silverman52
+                                on_release: silverman52.state = "down" if silverman52.state == "normal" else "normal"
+                                group: 'silver5'
+                        MDListItem:
+                            on_release: silverman53.state = "down" if silverman53.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Стонущее, экспираторные шумы слышны на расстоянии"
+                            MDListItemTrailingCheckbox:
+                                id: silverman53
+                                on_release: silverman53.state = "down" if silverman53.state == "normal" else "normal"
+                                group: 'silver5'
+
+                #MDDivider:
+                    #size_hint_x: .8
+                    #pos_hint: {'center_x': .5}
+                    #padding: 0, 0, 0, "24dp"
+
+
+                MDTextField:
+                    mode: "outlined"
+                    readonly: True
+                    id: result
+                    MDTextFieldHintText:
+                        text: "Результат:"
+
+                MDTextField:
+                    mode: "outlined"
+                    readonly: True
+                    id: inter
+                    MDTextFieldHintText:
+                        text: "Интерпретация:"
+
+        MDNavigationBar:
+            size_hint_y: .2
+            padding: "10dp"
+            spacing: "10dp"
+            #set_bars_color: True
+            MDNavigationItem:
+                on_release: app.count_silverman()
+                active: False
+                MDNavigationItemLabel:
+                    text: "Вычислить"
+                    pos_hint: {"center_x": .5, "center_y": 0}
+
+
+            MDNavigationItem:
+                on_release: app.clear_silverman()
+                active: False
+                MDNavigationItemLabel:
+                    text: "Очистить форму"
+                    pos_hint: {"center_x": .5, "center_y": 0}
+
+
+
+<ScreenDownes@MDScreen>:
+    name: "downes"
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            MDGridLayout:
+                padding: "12dp", "36dp", "12dp", "12dp"
+                spacing: "12dp"
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_width: 100
+
+                MDLabel:
+                    text: "Шкала Даунса"
+                    font_style: "Headline"
+                    padding: 0, 0, 0, "24dp"
+
+                ListMenu:
+                    MDLabel:
+                        text: "ЧД (Частота дыхания)"
+                    MDList:
+                        MDListItem:
+                            on_release: downes11.state = "down" if downes11.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "60"
+                            MDListItemTrailingCheckbox:
+                                id: downes11
+                                on_release: downes11.state = "down" if downes11.state == "normal" else "normal"
+                                group: 'downes1'
+                        MDListItem:
+                            on_release: downes12.state = "down" if downes12.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "60-80"
+                            MDListItemTrailingCheckbox:
+                                id: downes12
+                                on_release: downes12.state = "down" if downes12.state == "normal" else "normal"
+                                group: 'downes1'
+                        MDListItem:
+                            on_release: downes13.state = "down" if downes13.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Более 80"
+                            MDListItemTrailingCheckbox:
+                                id: downes13
+                                on_release: downes13.state = "down" if downes13.state == "normal" else "normal"
+                                group: 'downes1'
+
+
+                ListMenu:
+                    MDLabel:
+                        text: "Цианоз"
+                    MDList:
+                        MDListItem:
+                            on_release: downes21.state = "down" if downes21.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Отсутствует"
+                            MDListItemTrailingCheckbox:
+                                id: downes21
+                                on_release: downes21.state = "down" if downes21.state == "normal" else "normal"
+                                group: 'downes2'
+                        MDListItem:
+                            on_release: downes22.state = "down" if downes22.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "При дыхании комнатным воздухом"
+                            MDListItemTrailingCheckbox:
+                                id: downes22
+                                on_release: downes22.state = "down" if downes22.state == "normal" else "normal"
+                                group: 'downes2'
+                        MDListItem:
+                            on_release: downes23.state = "down" if downes23.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "При дыхании 40% кислородом"
+                            MDListItemTrailingCheckbox:
+                                id: downes23
+                                on_release: downes23.state = "down" if downes23.state == "normal" else "normal"
+                                group: 'downes2'
+
+                ListMenu:
+                    MDLabel:
+                        text: "Раздувание крыльев носа"
+                    MDList:
+                        MDListItem:
+                            on_release: downes31.state = "down" if downes31.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Отсутствует"
+                            MDListItemTrailingCheckbox:
+                                id: downes31
+                                on_release: downes31.state = "down" if downes31.state == "normal" else "normal"
+                                group: 'downes3'
+                        MDListItem:
+                            on_release: downes32.state = "down" if downes32.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Еле заметное"
+                            MDListItemTrailingCheckbox:
+                                id: downes32
+                                on_release: downes32.state = "down" if downes32.state == "normal" else "normal"
+                                group: 'downes3'
+                        MDListItem:
+                            on_release: downes33.state = "down" if downes33.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Умеренное или выраженное"
+                            MDListItemTrailingCheckbox:
+                                id: downes33
+                                on_release: downes33.state = "down" if downes33.state == "normal" else "normal"
+                                group: 'downes3'
+
+                ListMenu:
+                    MDLabel:
+                        text: "Затрудненный выдох"
+                    MDList:
+                        MDListItem:
+                            on_release: downes41.state = "down" if downes41.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Отсутствует"
+                            MDListItemTrailingCheckbox:
+                                id: downes41
+                                on_release: downes41.state = "down" if downes41.state == "normal" else "normal"
+                                group: 'downes4'
+                        MDListItem:
+                            on_release: downes42.state = "down" if downes42.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Слышен при аускультации"
+                            MDListItemTrailingCheckbox:
+                                id: downes42
+                                on_release: downes42.state = "down" if downes42.state == "normal" else "normal"
+                                group: 'downes4'
+                        MDListItem:
+                            on_release: downes43.state = "down" if downes43.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Слышен без стетоскопа"
+                            MDListItemTrailingCheckbox:
+                                id: downes43
+                                on_release: downes43.state = "down" if downes43.state == "normal" else "normal"
+                                group: 'downes4'
+
+                ListMenu:
+                    MDLabel:
+                        text: "Аускультация"
+                    MDList:
+                        MDListItem:
+                            on_release: downes51.state = "down" if downes51.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Дыхание прослушивается хорошо"
+                            MDListItemTrailingCheckbox:
+                                id: downes51
+                                on_release: downes51.state = "down" if downes51.state == "normal" else "normal"
+                                group: 'downes5'
+                        MDListItem:
+                            on_release: downes52.state = "down" if downes52.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Дыхание ослабленное"
+                            MDListItemTrailingCheckbox:
+                                id: downes52
+                                on_release: downes52.state = "down" if downes52.state == "normal" else "normal"
+                                group: 'downes5'
+                        MDListItem:
+                            on_release: downes53.state = "down" if downes53.state == "normal" else "normal"
+                            MDListItemHeadlineText:
+                                text: "Дыхание едва слышно"
+                            MDListItemTrailingCheckbox:
+                                id: downes53
+                                on_release: downes53.state = "down" if downes53.state == "normal" else "normal"
+                                group: 'downes5'
+
+                MDTextField:
+                    mode: "outlined"
+                    readonly: True
+                    id: result
+                    MDTextFieldHintText:
+                        text: "Результат:"
+
+                MDTextField:
+                    mode: "outlined"
+                    readonly: True
+                    id: inter
+                    MDTextFieldHintText:
+                        text: "Интерпретация:"
+
+        MDNavigationBar:
+            size_hint_y: .2
+            padding: "10dp"
+            spacing: "10dp"
+            #set_bars_color: True
+            MDNavigationItem:
+                on_release: app.count_downes()
+                active: False
+                MDNavigationItemLabel:
+                    text: "Вычислить"
+                    pos_hint: {"center_x": .5, "center_y": 0}
+
+
+            MDNavigationItem:
+                on_release: app.clear_downes()
+                active: False
+                MDNavigationItemLabel:
+                    text: "Очистить форму"
+                    pos_hint: {"center_x": .5, "center_y": 0}
+
+
+
+<ScreenBallard@MDScreen>:
+    name: "ballard"
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            MDGridLayout:
+                padding: "12dp", "36dp", "12dp", "12dp"
+                spacing: "12dp"
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_width: 100
+
+                MDLabel:
+                    text: "Шкала Балларда"
+                    font_style: "Headline"
+                    padding: 0, 0, 0, "24dp"
+
+                MDLabel:
+                    text: "Поза"
+
+                MDGridLayout:
+                    #orientation: "vertical"
+                    padding: "12dp", "6dp", "12dp", 0
+                    spacing: "12dp"
+                    adaptive_height: True
+                    cols: 3
+
+                    MDList:
+                        #size_hint_y: .5
+                        MDListItem:
+                            #orientation: 'vertical'
+                            on_release: ballard11.state = "down" if ballard11.state == "normal" else "normal"
+                            MDListItemLeadingAvatar:
+                                #source: "image/logo.png"
+                                #fit_mode: "contain"
+                            MDListItemHeadlineText:
+                                text: ""
+                            MDListItemTrailingCheckbox:
+                                id: ballard11
+                                on_release: ballard11.state = "down" if ballard11.state == "normal" else "normal"
+                                group: 'ballar_image1'
+
+                    MDList:
+                        #size_hint_y: .5
+                        MDListItem:
+                            #orientation: 'vertical'
+                            on_release: ballard12.state = "down" if ballard12.state == "normal" else "normal"
+                            MDListItemLeadingAvatar:
+                                #source: "image/logo.png"
+                                #fit_mode: "contain"
+                            MDListItemHeadlineText:
+                                text: ""
+                            MDListItemTrailingCheckbox:
+                                id: ballard12
+                                on_release: ballard12.state = "down" if ballard12.state == "normal" else "normal"
+                                group: 'ballar_image1'
+
+
+
+
+                MDTextField:
+                    mode: "outlined"
+                    readonly: True
+                    id: result
+                    MDTextFieldHintText:
+                        text: "Результат:"
+
+                MDTextField:
+                    mode: "outlined"
+                    readonly: True
+                    id: inter
+                    MDTextFieldHintText:
+                        text: "Интерпретация:"
+
+        MDNavigationBar:
+            size_hint_y: .2
+            padding: "10dp"
+            spacing: "10dp"
+            #set_bars_color: True
+            MDNavigationItem:
+                on_release: app.count_downes()
+                active: False
+                MDNavigationItemLabel:
+                    text: "Вычислить"
+                    pos_hint: {"center_x": .5, "center_y": 0}
+
+
+            MDNavigationItem:
+                on_release: app.clear_downes()
+                active: False
+                MDNavigationItemLabel:
+                    text: "Очистить форму"
+                    pos_hint: {"center_x": .5, "center_y": 0}
