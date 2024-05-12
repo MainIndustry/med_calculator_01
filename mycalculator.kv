@@ -1,4 +1,5 @@
 #: import NoTransition kivy.uix.screenmanager.NoTransition
+#: import ToggleButtonBehavior kivy.uix.behaviors.ToggleButtonBehavior
 
 MDScreen:
     md_bg_color: self.theme_cls.secondaryContainerColor
@@ -28,14 +29,14 @@ MDScreen:
                 MDNavigationDrawerDivider:
 
                 MDNavigationDrawerItem:
-                    on_release: nav_manager.current = 'menu'
+                    on_release: nav_manager.current = 'menu' ; nav_drawer.set_state("toggle")
                     #nav_manager.transition = NoTransition() ;
                     MDNavigationDrawerItemLeadingIcon:
                         icon: "calculator"
                     MDNavigationDrawerItemText:
                         text: "Калькуляторы"
                 MDNavigationDrawerItem:
-                    on_release: nav_manager.current = 'settings'
+                    on_release: nav_manager.current = 'settings' ; nav_drawer.set_state("toggle")
                     MDNavigationDrawerItemLeadingIcon:
                         icon: "cog"
                     MDNavigationDrawerItemText:
@@ -44,17 +45,6 @@ MDScreen:
                 MDNavigationDrawerDivider:
 
 
-<TopMenu@MDTopAppBar>:
-    type: "small"
-    #size_hint_x: 1
-    #pos_hint: {"top": 1}
-    MDTopAppBarLeadingButtonContainer:
-        MDActionTopAppBarButton:
-            icon: "menu"
-            on_release: app.open_menu()
-    MDTopAppBarTitle:
-        text: "Медицинский калькулятор"
-        pos_hint: {"center_x": .5}
 
 <ScreenCalculator@MDScreen>:
     name: "menu"
@@ -122,6 +112,17 @@ MDScreen:
         MDTopAppBar:
             type: "small"
 
+<TopMenu@MDTopAppBar>:
+    size_hint_y: .2
+    MDTopAppBarLeadingButtonContainer:
+        MDActionTopAppBarButton:
+            icon: "menu"
+            on_press: app.open_menu()
+    MDTopAppBarTitle:
+        text: "Медицинский калькулятор"
+        pos_hint: {"center_x": .5}
+        font_style: "Title"
+        role: "medium"
 
 <TopMenu2@MDTopAppBar>:
     size_hint_y: .2
@@ -133,8 +134,10 @@ MDScreen:
     MDTopAppBarTitle:
         text: "Медицинский калькулятор"
         pos_hint: {"center_x": .5}
-    MDTopAppBarTrailingButtonContainer:
-        MDActionTopAppBarButton:
+        font_style: "Title"
+        role: "medium"
+    #MDTopAppBarTrailingButtonContainer:
+        #MDActionTopAppBarButton:
             #icon: "dots-vertical"
 
 <ListMenu@MDBoxLayout>
@@ -143,9 +146,28 @@ MDScreen:
     padding: "12dp", "6dp", "12dp", 0
     spacing: "12dp"
 
+<MDListItem>:
+    adaptive_height: True
+
 <MDListItemTrailingCheckbox>:
     radio_icon_normal: "checkbox-blank-outline"
     radio_icon_down: "checkbox-marked"
+
+#<MDSmartTile>:
+    #image_radius: [dp(24), ]
+    #container_radius: [0, 0, dp(24), dp(24)]
+
+<TileContainer@MDSmartTileOverlayContainer>:
+    #md_bg_color: 0, 0, 0, .1
+    adaptive_height: True
+    padding: "8dp"
+    spacing: "8dp"
+
+
+<ImageCheckbox@MDCheckbox>:
+    pos_hint: {"center_y": .5}
+        
+
 
 
 <ScreenSilverman@MDScreen>:
@@ -566,65 +588,111 @@ MDScreen:
     name: "ballard"
     MDBoxLayout:
         orientation: 'vertical'
-        spacing: "12dp"
+        #spacing: "12dp"
 
         TopMenu2:
+            id: ballard_top
 
         ScrollView:
             MDGridLayout:
-                padding: "12dp", "36dp", "12dp", "12dp"
+                padding: "12dp"
                 spacing: "12dp"
                 cols: 1
-                size_hint_y: None
-                height: self.minimum_height
-                row_default_width: 100
+                adaptive_height: True
+                #row_default_width: 100
 
                 MDLabel:
                     text: "Шкала Балларда"
                     font_style: "Headline"
-                    padding: 0, 0, 0, "24dp"
+                    #padding: 0, 0, 0, "24dp"
+                    adaptive_height: True
+
+                MDLabel:
+                    text: "Оценка нейромышечной зрелости новорождённого ребёнка"
+                    font_style: "Title"
+                    #padding: 0, 0, 0, "12dp"
+                    adaptive_height: True
 
                 MDLabel:
                     text: "Поза"
+                    adaptive_height: True
+                    padding: "24dp", 0, 0, 0
 
                 MDGridLayout:
                     #orientation: "vertical"
                     padding: "12dp", "6dp", "12dp", 0
-                    spacing: "12dp"
-                    adaptive_height: True
+                    spacing: "6dp"
+                    #pos_hint: {"center_x": .5}
+                    size_hint_y: None
+                    height: root.width / 2
+                    #size_hint_x: None
+                    #width: root.width * .8
+                    #height: root.height - ballard.height
+                    rows: 3
                     cols: 3
+                    #on_touch_down: print(root)
 
-                    MDList:
-                        #size_hint_y: .5
-                        MDListItem:
-                            #orientation: 'vertical'
-                            on_release: ballard11.state = "down" if ballard11.state == "normal" else "normal"
-                            MDListItemLeadingAvatar:
-                                #source: "image/logo.png"
-                                #fit_mode: "contain"
-                            MDListItemHeadlineText:
-                                text: ""
-                            MDListItemTrailingCheckbox:
-                                id: ballard11
-                                on_release: ballard11.state = "down" if ballard11.state == "normal" else "normal"
-                                group: 'ballar_image1'
+                    MDSmartTile:
+                        on_release: poza_1.state = "down" if poza_1.state == "normal" else "normal"
+                        MDSmartTileImage:
+                            source: "image/logo.png"
+                        TileContainer:
+                            ImageCheckbox:
+                                id: poza_1
+                                on_release: poza_1.state = "down" if poza_1.state == "normal" else "normal"
+                                group: "poza"
 
-                    MDList:
-                        #size_hint_y: .5
-                        MDListItem:
-                            #orientation: 'vertical'
-                            on_release: ballard12.state = "down" if ballard12.state == "normal" else "normal"
-                            MDListItemLeadingAvatar:
-                                #source: "image/logo.png"
-                                #fit_mode: "contain"
-                            MDListItemHeadlineText:
-                                text: ""
-                            MDListItemTrailingCheckbox:
-                                id: ballard12
-                                on_release: ballard12.state = "down" if ballard12.state == "normal" else "normal"
-                                group: 'ballar_image1'
+                    MDSmartTile:
+                        on_release: poza_2.state = "down" if poza_2.state == "normal" else "normal"
+                        MDSmartTileImage:
+                            source: "image/logo.png"
+                        TileContainer:
+                            ImageCheckbox:
+                                id: poza_2
+                                on_release: poza_2.state = "down" if poza_2.state == "normal" else "normal"                                
+                                group: "poza"
 
+                    MDSmartTile:
+                        on_release: poza_3.state = "down" if poza_3.state == "normal" else "normal"
+                        MDSmartTileImage:
+                            source: "image/logo.png"
+                        TileContainer:
+                            ImageCheckbox:
+                                id: poza_3
+                                on_release: poza_3.state = "down" if poza_3.state == "normal" else "normal"
+                                group: "poza"
 
+                    MDSmartTile:
+                        on_release: poza_4.state = "down" if poza_4.state == "normal" else "normal"
+                        MDSmartTileImage:
+                            source: "image/logo.png"
+                        TileContainer:
+                            ImageCheckbox:
+                                id: poza_4
+                                on_release: poza_4.state = "down" if poza_4.state == "normal" else "normal"
+                                #on_active: print(self, root, self.group, self.state)
+                                #on_active: app.check(self)
+                                group: "poza"
+
+                    MDSmartTile:
+                        on_release: poza_5.state = "down" if poza_5.state == "normal" else "normal"
+                        MDSmartTileImage:
+                            source: "image/logo.png"
+                        TileContainer:
+                            ImageCheckbox:
+                                id: poza_5
+                                on_release: poza_5.state = "down" if poza_5.state == "normal" else "normal"
+                                group: "poza"
+
+                    MDSmartTile:
+                        on_release: poza_6.state = "down" if poza_6.state == "normal" else "normal"
+                        MDSmartTileImage:
+                            source: "image/logo.png"
+                        TileContainer:
+                            ImageCheckbox:
+                                id: poza_6
+                                on_release: poza_6.state = "down" if poza_6.state == "normal" else "normal"
+                                group: "poza"
 
 
                 MDTextField:

@@ -12,6 +12,14 @@ class MyCalculatorApp(MDApp):
     def back_to_menu(self):
         self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.current = "calculator"
 
+    def check(self, instance):
+        s = ToggleButtonBehavior.get_widgets(instance.group)
+        print(instance.active)
+        print(s)
+        for widget in s:
+            if widget.active:
+                print(widget)
+
     def count_silverman(self):
         c1 = ToggleButtonBehavior.get_widgets('silver1')
         c2 = ToggleButtonBehavior.get_widgets('silver2')
