@@ -165,7 +165,7 @@ MDScreen:
 
 
 <ImageCheckbox@MDCheckbox>:
-    pos_hint: {"center_y": .5}
+    pos_hint: {"center_y": .1, "center_x": 0}
         
 
 
@@ -635,7 +635,7 @@ MDScreen:
                     MDSmartTile:
                         on_release: poza_1.state = "down" if poza_1.state == "normal" else "normal"
                         MDSmartTileImage:
-                            source: "image/logo.png"
+                            source: "image/poza_1.png"
                         TileContainer:
                             ImageCheckbox:
                                 id: poza_1
@@ -645,7 +645,7 @@ MDScreen:
                     MDSmartTile:
                         on_release: poza_2.state = "down" if poza_2.state == "normal" else "normal"
                         MDSmartTileImage:
-                            source: "image/logo.png"
+                            source: "image/poza_2.png"
                         TileContainer:
                             ImageCheckbox:
                                 id: poza_2
@@ -655,7 +655,7 @@ MDScreen:
                     MDSmartTile:
                         on_release: poza_3.state = "down" if poza_3.state == "normal" else "normal"
                         MDSmartTileImage:
-                            source: "image/logo.png"
+                            source: "image/poza_3.png"
                         TileContainer:
                             ImageCheckbox:
                                 id: poza_3
@@ -665,7 +665,7 @@ MDScreen:
                     MDSmartTile:
                         on_release: poza_4.state = "down" if poza_4.state == "normal" else "normal"
                         MDSmartTileImage:
-                            source: "image/logo.png"
+                            source: "image/poza_4.png"
                         TileContainer:
                             ImageCheckbox:
                                 id: poza_4
@@ -677,21 +677,11 @@ MDScreen:
                     MDSmartTile:
                         on_release: poza_5.state = "down" if poza_5.state == "normal" else "normal"
                         MDSmartTileImage:
-                            source: "image/logo.png"
+                            source: "image/poza_5.png"
                         TileContainer:
                             ImageCheckbox:
                                 id: poza_5
                                 on_release: poza_5.state = "down" if poza_5.state == "normal" else "normal"
-                                group: "poza"
-
-                    MDSmartTile:
-                        on_release: poza_6.state = "down" if poza_6.state == "normal" else "normal"
-                        MDSmartTileImage:
-                            source: "image/logo.png"
-                        TileContainer:
-                            ImageCheckbox:
-                                id: poza_6
-                                on_release: poza_6.state = "down" if poza_6.state == "normal" else "normal"
                                 group: "poza"
 
 
