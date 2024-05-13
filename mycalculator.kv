@@ -47,6 +47,19 @@ MDScreen:
 
                 ScrollView:
                     ScrollMenu:
+                        Title:
+                            text: "Калькуляторы"
+                        MDButton:
+                            MDButtonText:
+                                text: "Калькулятор1"
+                        MDButton:
+                            MDButtonText:
+                                text: "Калькулятор2"
+                        MDButton:
+                            MDButtonText:
+                                text: "Калькулятор3"
+                        Title:
+                            text: "Шкалы"
                         MDButton:
                             on_release: menu_manager.current = "silverman"
                             MDButtonText:
@@ -59,9 +72,6 @@ MDScreen:
                             on_release: menu_manager.current = "ballard"
                             MDButtonText:
                                 text: "Шкала Балларда"
-                        MDButton:
-                            MDButtonText:
-                                text: "Шкала4"
 
                 MDTopAppBar:
                     size_hint_y: .2
@@ -84,17 +94,9 @@ MDScreen:
 
         ScrollView:
             ScrollMenu:
-                MDLabel:
-                    text:"Screen 2"
-                MDList:
-                    MDListItem:
-                        on_release: test1.state = "down" if test1.state == "normal" else "normal"
-                        MDListItemHeadlineText:
-                            text: "[size=14]Зрелая, толстая, морщинистая, складчатая[/size]"
-                        MDListItemTrailingCheckbox:
-                            id: test1
-                            on_release: test1.state = "down" if test1.state == "normal" else "normal"
-
+                Header:
+                    text:"Второй скрин"
+                                   
         MDTopAppBar:
             size_hint_y: .2
 
@@ -120,24 +122,21 @@ MDScreen:
         pos_hint: {"center_x": .5}
         font_style: "Title"
         role: "medium"
-<MDList>
-    adaptive_height: True
-    #padding: "12dp", 0
-<MDListItem>:
-    adaptive_height: True
-<MDListItemTrailingCheckbox>:
+
+<MDCheckbox>:
     radio_icon_normal: "checkbox-blank-outline"
     radio_icon_down: "checkbox-marked"
 <TileContainer@MDSmartTileOverlayContainer>:
     adaptive_height: True
-    padding: "8dp"
+    padding: 0, "8dp"
     spacing: "8dp"
-<MDListItemHeadlineText>:
+<#MDListItemHeadlineText>:
     #text: "[size=54][/size]"
 <ImageCheckbox@MDCheckbox>:
+    radio_icon_normal: "checkbox-blank-circle-outline"
+    radio_icon_down: "checkbox-marked-circle"
     pos_hint: {"center_y": .1, "center_x": 0}
 <SmartMenu@MDGridLayout>:
-    #padding: "12dp", 0
     spacing: "6dp"
     size_hint_y: None
     rows: 3
@@ -988,19 +987,285 @@ MDScreen:
                             on_release: ballard26.state = "down" if ballard26.state == "normal" else "normal"
                             group: 'ballard2'
 
+                SubMenuTitle:
+                    text: "Поверхность подошвы"               
+                MDList:
+                    MDListItem:
+                        on_release: ballard31.state = "down" if ballard31.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Длина стопы < 40мм"
+                        MDListItemTrailingCheckbox:
+                            id: ballard31
+                            on_release: ballard31.state = "down" if ballard31.state == "normal" else "normal"
+                            group: 'ballard3'
+                    MDListItem:
+                        on_release: ballard32.state = "down" if ballard32.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Длина стопы 40-50мм"
+                        MDListItemTrailingCheckbox:
+                            id: ballard32
+                            on_release: ballard32.state = "down" if ballard32.state == "normal" else "normal"
+                            group: 'ballard3'
+                    MDListItem:
+                        on_release: ballard33.state = "down" if ballard33.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: ">50мм, нет складок"
+                        MDListItemTrailingCheckbox:
+                            id: ballard33
+                            on_release: ballard33.state = "down" if ballard33.state == "normal" else "normal"
+                            group: 'ballard3'
+                    MDListItem:
+                        on_release: ballard34.state = "down" if ballard34.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Нечёткие красные полосы"
+                        MDListItemTrailingCheckbox:
+                            id: ballard34
+                            on_release: ballard34.state = "down" if ballard34.state == "normal" else "normal"
+                            group: 'ballard3'
+                    MDListItem:
+                        on_release: ballard35.state = "down" if ballard35.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Заметна только передняя поперечная борозда"
+                        MDListItemTrailingCheckbox:
+                            id: ballard35
+                            on_release: ballard35.state = "down" if ballard35.state == "normal" else "normal"
+                            group: 'ballard3'
+                    MDListItem:
+                        on_release: ballard36.state = "down" if ballard36.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Борозды покрывают передние 2/3 стопы"
+                        MDListItemTrailingCheckbox:
+                            id: ballard36
+                            on_release: ballard36.state = "down" if ballard36.state == "normal" else "normal"
+                            group: 'ballard3'
+                    MDListItem:
+                        on_release: ballard37.state = "down" if ballard37.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Борозды покрывают всю стопу"
+                        MDListItemTrailingCheckbox:
+                            id: ballard37
+                            on_release: ballard37.state = "down" if ballard37.state == "normal" else "normal"
+                            group: 'ballard3'
 
+                SubMenuTitle:
+                    text: "Грудные железы"               
+                MDList:
+                    MDListItem:
+                        on_release: ballard41.state = "down" if ballard41.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Не определяются"
+                        MDListItemTrailingCheckbox:
+                            id: ballard41
+                            on_release: ballard41.state = "down" if ballard41.state == "normal" else "normal"
+                            group: 'ballard4'
+                    MDListItem:
+                        on_release: ballard42.state = "down" if ballard42.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Едва определяются"
+                        MDListItemTrailingCheckbox:
+                            id: ballard42
+                            on_release: ballard42.state = "down" if ballard42.state == "normal" else "normal"
+                            group: 'ballard4'
+                    MDListItem:
+                        on_release: ballard43.state = "down" if ballard43.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Сосок не выражен, ареола плоская"
+                        MDListItemTrailingCheckbox:
+                            id: ballard43
+                            on_release: ballard43.state = "down" if ballard43.state == "normal" else "normal"
+                            group: 'ballard4'
+                    MDListItem:
+                        on_release: ballard44.state = "down" if ballard44.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Ареола чётко очерчена, диаметр железы 1-2мм"
+                        MDListItemTrailingCheckbox:
+                            id: ballard44
+                            on_release: ballard44.state = "down" if ballard44.state == "normal" else "normal"
+                            group: 'ballard4'
+                    MDListItem:
+                        on_release: ballard45.state = "down" if ballard45.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Ареола возвышается, диаметр железы 3-4 мм"
+                        MDListItemTrailingCheckbox:
+                            id: ballard45
+                            on_release: ballard45.state = "down" if ballard45.state == "normal" else "normal"
+                            group: 'ballard4'
+                    MDListItem:
+                        on_release: ballard46.state = "down" if ballard46.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Ареола полностью сформирована, диаметр железы 5-10мм"
+                        MDListItemTrailingCheckbox:
+                            id: ballard46
+                            on_release: ballard46.state = "down" if ballard46.state == "normal" else "normal"
+                            group: 'ballard4'
+                
+                SubMenuTitle:
+                    text: "Глаз/ухо"               
+                MDList:
+                    MDListItem:
+                        on_release: ballard51.state = "down" if ballard51.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Веки сомкнуты плотно"
+                        MDListItemTrailingCheckbox:
+                            id: ballard51
+                            on_release: ballard51.state = "down" if ballard51.state == "normal" else "normal"
+                            group: 'ballard5'
+                    MDListItem:
+                        on_release: ballard52.state = "down" if ballard52.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Веки сомкнуты неплотно"
+                        MDListItemTrailingCheckbox:
+                            id: ballard52
+                            on_release: ballard52.state = "down" if ballard52.state == "normal" else "normal"
+                            group: 'ballard5'
+                    MDListItem:
+                        on_release: ballard53.state = "down" if ballard53.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Глазки открываются, ушная раковина плоская, при сгибании остаётся нерасправленной"
+                        MDListItemTrailingCheckbox:
+                            id: ballard53
+                            on_release: ballard53.state = "down" if ballard53.state == "normal" else "normal"
+                            group: 'ballard5'
+                    MDListItem:
+                        on_release: ballard54.state = "down" if ballard54.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Часть ушной раковины загнута внутрь; ушная раковина мягкая, при сгибании расправляется медленно"
+                        MDListItemTrailingCheckbox:
+                            id: ballard54
+                            on_release: ballard54.state = "down" if ballard54.state == "normal" else "normal"
+                            group: 'ballard5'
+                    MDListItem:
+                        on_release: ballard55.state = "down" if ballard55.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Вся верхняя часть ушной раковины загнута внутрь; ушная раковина мягкая, при сгибании легко расправляется"
+                        MDListItemTrailingCheckbox:
+                            id: ballard55
+                            on_release: ballard55.state = "down" if ballard55.state == "normal" else "normal"
+                            group: 'ballard5'
+                    MDListItem:
+                        on_release: ballard56.state = "down" if ballard56.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Вся верхняя часть ушной раковины загнута внутрь; твёрдая, сразу же расправляется после сгибания"
+                        MDListItemTrailingCheckbox:
+                            id: ballard56
+                            on_release: ballard56.state = "down" if ballard56.state == "normal" else "normal"
+                            group: 'ballard5'
+                    MDListItem:
+                        on_release: ballard57.state = "down" if ballard57.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Плотный хрящ; негибкая ушная раковина"
+                        MDListItemTrailingCheckbox:
+                            id: ballard57
+                            on_release: ballard57.state = "down" if ballard57.state == "normal" else "normal"
+                            group: 'ballard5'
+                
+                SubMenuTitle:
+                    text: "Гениталии"
+                MDGridLayout:
+                    id: genit_choice
+                    cols: 2
+                    adaptive_height: True
+                    spacing: "6dp"
+                    MDCheckbox:
+                        id: genit1
+                        group: "genit"
+                        active: True
+                        on_press: app.change_genit()
+                    MDLabel:
+                        text: "Мальчик"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                    MDCheckbox:
+                        id: genit2
+                        group: "genit"
+                        on_press: app.change_genit()
+                    MDLabel:
+                        text: "Девочка"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                MDList:
+                    MDListItem:
+                        on_release: ballard61.state = "down" if ballard61.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            id: ballardtext61 
+                            text: "Мошонка, пустая, гладкая"
+                        MDListItemTrailingCheckbox:
+                            id: ballard61
+                            on_release: ballard61.state = "down" if ballard61.state == "normal" else "normal"
+                            group: 'ballard6'
+                    MDListItem:
+                        on_release: ballard62.state = "down" if ballard62.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            id: ballardtext62 
+                            text: "Мошонка, пустая, незначительные складки"
+                        MDListItemTrailingCheckbox:
+                            id: ballard62
+                            on_release: ballard62.state = "down" if ballard62.state == "normal" else "normal"
+                            group: 'ballard6'
+                    MDListItem:
+                        on_release: ballard63.state = "down" if ballard63.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            text: "Яички расположены над входом в мошонку, редкие складки"
+                            id: ballardtext63 
+                        MDListItemTrailingCheckbox:
+                            id: ballard63
+                            on_release: ballard63.state = "down" if ballard63.state == "normal" else "normal"
+                            group: 'ballard6'
+                    MDListItem:
+                        on_release: ballard64.state = "down" if ballard64.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            id: ballardtext64 
+                            text: "Яички опускаются в мошонку (процесс не завершён), несколько складок"
+                        MDListItemTrailingCheckbox:
+                            id: ballard64
+                            on_release: ballard64.state = "down" if ballard64.state == "normal" else "normal"
+                            group: 'ballard6'
+                    MDListItem:
+                        on_release: ballard65.state = "down" if ballard65.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            id: ballardtext65 
+                            text: "Яички опущены в мошонку, складки хорошо выражены"
+                        MDListItemTrailingCheckbox:
+                            id: ballard65
+                            on_release: ballard65.state = "down" if ballard65.state == "normal" else "normal"
+                            group: 'ballard6'
+                    MDListItem:
+                        on_release: ballard66.state = "down" if ballard66.state == "normal" else "normal"
+                        MDListItemHeadlineText:
+                            id: ballardtext66 
+                            text: "Яички свободно подвешены в мошонке, хорошо выражены глубокие складки"
+                        MDListItemTrailingCheckbox:
+                            id: ballard66
+                            on_release: ballard66.state = "down" if ballard66.state == "normal" else "normal"
+                            group: 'ballard6'
 
-                ResultField:
-                    id: result
+                MDTextField:
+                    id: result1
+                    mode: "outlined"
+                    readonly: True
+                    MDTextFieldHintText:
+                        text: "Оценка нейромышленной зрелости:"   
+                MDTextField:
+                    id: result2
+                    mode: "outlined"
+                    readonly: True
+                    MDTextFieldHintText:
+                        text: "Оценка физической зрелости:"
+                MDTextField:
+                    id: resultfinal
+                    mode: "outlined"
+                    readonly: True
+                    MDTextFieldHintText:
+                        text: "Общая оценка зрелости:"          
                 InterField:
                     id: inter
 
         MDNavigationBar:
             MDNavigationItem:
-                #on_release: app.count_downes()
+                on_release: app.count_ballard()
                 active: False
                 CountBar:
             MDNavigationItem:
-                #on_release: app.clear_downes()
+                on_release: app. clear_ballard()
                 active: False
                 ClearBar:
