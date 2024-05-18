@@ -50,8 +50,9 @@ MDScreen:
                         Title:
                             text: "Калькуляторы"
                         MDButton:
+                            on_release: menu_manager.current = "massloss"
                             MDButtonText:
-                                text: "Калькулятор1"
+                                text: "Расчёт убыли массы тела"                               
                         MDButton:
                             MDButtonText:
                                 text: "Калькулятор2"
@@ -80,7 +81,7 @@ MDScreen:
                             icon: "magnify"
                     MDTopAppBarTitle:
                         text: "Поиск..."
-
+        ScreenMassLoss:
         ScreenSilverman:
         ScreenDownes:
         ScreenBallard:
@@ -177,6 +178,46 @@ MDScreen:
     text: "Очистить форму"
     pos_hint: {"center_x": .5, "center_y": 0}
 
+<ScreenMassLoss@MDScreen>:
+    name: "massloss"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                Header:
+                    text: "Расчёт убыли массы тела"
+                SubMenuTitle:
+                    text: "Масса при рождении (г)"
+                MDTextField:
+                    id: mass1
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Настоящая масса (г)"
+                MDTextField:
+                    id: mass2
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Потеря массы тела" 
+                MDTextField:
+                    id: result
+                    mode: "outlined"
+                    readonly: True
+
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.count_mass()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_mass()
+                active: False
+                ClearBar:
 
 <ScreenSilverman@MDScreen>:
     name: "silverman"

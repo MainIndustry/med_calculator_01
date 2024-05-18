@@ -2,12 +2,31 @@ from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
-
+from kivymd.uix.textfield import MDTextField
 
 class MyCalculatorApp(MDApp):
     def build(self):
         return
 
+    def count_mass(self):
+        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('massloss').ids
+        if (sh.mass1.text != "") and (sh.mass2.text != ""):
+            x1 = int(sh.mass1.text)
+            x2 = int(sh.mass2.text)
+            y = round(((x1 - x2) * 100 / x1), 1)
+            if x1 >= x2:
+                y = round(((x1 - x2) * 100 / x1), 1)
+                sh.result.text = f"{y} %"
+            else:
+                sh.result.text = "---"
+        else:
+            sh.result.text = ""
+
+    def clear_mass(self):
+        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('massloss').ids
+        sh.mass1.text = ""
+        sh.mass2.text = ""
+        sh.result.text = ""
     def change_genit(self):
         sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('ballard').ids
         if sh.genit2.active == True:
