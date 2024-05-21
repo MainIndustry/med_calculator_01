@@ -1,12 +1,18 @@
 from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.properties import StringProperty
 from kivymd.app import MDApp
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.textfield import MDTextField
+from kivymd.uix.selectioncontrol.selectioncontrol import MDCheckbox
+import math
+
 
 class MyCalculatorApp(MDApp):
     def build(self):
         return
+
+    def open_menu(self):
+        self.root.ids.nav_drawer.set_state("toggle")
+
+    def back_to_menu(self):
+        self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.current = "calculator"
 
     def count_mass(self):
         sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('massloss').ids
@@ -22,40 +28,66 @@ class MyCalculatorApp(MDApp):
         else:
             sh.result.text = ""
 
-    def clear_mass(self):
-        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('massloss').ids
-        sh.mass1.text = ""
-        sh.mass2.text = ""
-        sh.result.text = ""
-    def change_genit(self):
-        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('ballard').ids
-        if sh.genit2.active == True:
-            sh.ballardtext61.text = "Выступающий клитор, плоские половые губы"
-            sh.ballardtext62.text = "Выступающий клитор, полностью открытые небольшие малые половые губы"
-            sh.ballardtext63.text = "Выступающий клитор, полностью открытые малые половые губы"
-            sh.ballardtext64.text = "Одинаково выраженные большие и малые половые губы"
-            sh.ballardtext65.text = "Большие половые губы частично закрывают малые"
-            sh.ballardtext66.text = "Большие половые губы полностью закрывают малые половые губы и клитор"
+    def count_kurosurf(self):
+        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('kurosurf').ids
+        if sh.mass.text != "":
+            x = int(sh.mass.text)
+            if sh.dose1.active:
+                dose = 200
+            elif sh.dose2.active:
+                dose = 100
+            z1 = (x/1000) * dose
+            z2 = round((z1 / 80), 1)
+            z3 = math.ceil(z2/1.5)
+            sh.result1.text = f"{z1} мг"
+            sh.result2.text = f"{z2} мл"
+            match (z3 % 10):
+                case 1:
+                    sh.result3.text = f"{z3} флакон"
+                case 2 | 3 | 4:
+                    sh.result3.text = f"{z3} флакона"
+                case 5 | 6 | 7 | 8 | 9 | 0:
+                    sh.result3.text = f"{z3} флаконов"
         else:
-            sh.ballardtext61.text = "Мошонка, пустая, гладкая"
-            sh.ballardtext62.text = "Мошонка, пустая, незначительные складки"
-            sh.ballardtext63.text = "Яички расположены над входом в мошонку, редкие складки"
-            sh.ballardtext64.text = "Яички опускаются в мошонку (процесс не завершён), несколько складок"
-            sh.ballardtext65.text = "Яички опущены в мошонку, складки хорошо выражены"
-            sh.ballardtext66.text = "Яички свободно подвешены в мошонке, хорошо выражены глубокие складки"
-    def open_menu(self):
-        self.root.ids.nav_drawer.set_state("toggle")
+            sh.result1.text = ""
+            sh.result2.text = ""
+            sh.result3.text = ""
 
-    def back_to_menu(self):
-        self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.current = "calculator"
+    def count_cofe(self):
+        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('cofe').ids
+        if sh.mass.text != "":
+            x = int(sh.mass.text)
+            if sh.cofe1.active:
+                cofe = 20
+            elif sh.cofe2.active:
+                cofe = 5
+            z = (x/1000) * cofe
+            sh.result.text = f"{z} мг"
+        else:
+            sh.result.text = ""
 
-    def check(self, instance):
-        s = ToggleButtonBehavior.get_widgets(instance.group)
-        print(instance.active)
-        print(s)
-        for widget in s:
-            if widget.active:
-                print(widget)
+    def count_dofamine(self):
+        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('dofamine').ids
+        if sh.mass.text != "":
+            x = int(sh.mass.text)
+            dofa = float(sh.dofa.text)
+            z = ((x/1000) * dofa * 24 * 60)/40000
+            sh.result.text = f"{z} мл"
+        else:
+            sh.result.text = ""
+
+    def count_neutroindex(self):
+        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('neutroindex').ids
+        if ((sh.percent1.text != "") and (sh.percent2.text != "") and (sh.percent3.text != "")
+                and (sh.percent4.text != "")):
+            x1 = float(sh.percent1.text)
+            x2 = float(sh.percent2.text)
+            x3 = float(sh.percent3.text)
+            x4 = float(sh.percent4.text)
+            y = round(((x1 + x2 + x3) / x4), 2)
+            sh.result.text = f"{y}"
+        else:
+            sh.result.text = ""
 
     def count_silverman(self):
         c1 = ToggleButtonBehavior.get_widgets('silver1')
@@ -100,19 +132,6 @@ class MyCalculatorApp(MDApp):
             self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('silverman').ids.result.text = ""
             self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('silverman').ids.inter.text = ""
 
-    def clear_silverman(self):
-        c1 = ToggleButtonBehavior.get_widgets('silver1')
-        c2 = ToggleButtonBehavior.get_widgets('silver2')
-        c3 = ToggleButtonBehavior.get_widgets('silver3')
-        c4 = ToggleButtonBehavior.get_widgets('silver4')
-        c5 = ToggleButtonBehavior.get_widgets('silver5')
-        c_sum = c1 + c2 + c3 + c4 + c5
-        for widget in c_sum:
-            if widget.active == True:
-                widget.active = False
-        self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('silverman').ids.result.text = ""
-        self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('silverman').ids.inter.text = ""
-
     def count_downes(self):
         c1 = ToggleButtonBehavior.get_widgets('downes1')
         c2 = ToggleButtonBehavior.get_widgets('downes2')
@@ -153,20 +172,6 @@ class MyCalculatorApp(MDApp):
         else:
             self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('downes').ids.result.text = ""
             self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('downes').ids.inter.text = ""
-
-    def clear_downes(self):
-        c1 = ToggleButtonBehavior.get_widgets('downes1')
-        c2 = ToggleButtonBehavior.get_widgets('downes2')
-        c3 = ToggleButtonBehavior.get_widgets('downes3')
-        c4 = ToggleButtonBehavior.get_widgets('downes4')
-        c5 = ToggleButtonBehavior.get_widgets('downes5')
-        c_sum = c1 + c2 + c3 + c4 + c5
-        for widget in c_sum:
-            if widget.active == True:
-                widget.active = False
-        self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('downes').ids.result.text = ""
-        self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('downes').ids.inter.text = ""
-
     def count_ballard(self):
         sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('ballard').ids
         c1 = []
@@ -269,21 +274,36 @@ class MyCalculatorApp(MDApp):
             sh.resultfinal.text = ""
             sh.inter.text = ""
 
-    def clear_ballard(self):
+    def change_genit(self):
         sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('ballard').ids
-        c = []
-        ballard_group = ['poza','squarewindow','armrecoil','angle','scarf','heel',
-                         'ballard1', 'ballard2', 'ballard3', 'ballard4', 'ballard5', 'ballard6']
-        for item in ballard_group:
-            c.extend(ToggleButtonBehavior.get_widgets(item))
-        for widget in c:
-            if widget.active == True:
-                widget.active = False
-        sh.result1.text = ""
-        sh.result2.text = ""
-        sh.resultfinal.text = ""
-        sh.inter.text = ""
+        if sh.genit2.active == True:
+            sh.ballardtext61.text = "Выступающий клитор, плоские половые губы"
+            sh.ballardtext62.text = "Выступающий клитор, полностью открытые небольшие малые половые губы"
+            sh.ballardtext63.text = "Выступающий клитор, полностью открытые малые половые губы"
+            sh.ballardtext64.text = "Одинаково выраженные большие и малые половые губы"
+            sh.ballardtext65.text = "Большие половые губы частично закрывают малые"
+            sh.ballardtext66.text = "Большие половые губы полностью закрывают малые половые губы и клитор"
+        else:
+            sh.ballardtext61.text = "Мошонка, пустая, гладкая"
+            sh.ballardtext62.text = "Мошонка, пустая, незначительные складки"
+            sh.ballardtext63.text = "Яички расположены над входом в мошонку, редкие складки"
+            sh.ballardtext64.text = "Яички опускаются в мошонку (процесс не завершён), несколько складок"
+            sh.ballardtext65.text = "Яички опущены в мошонку, складки хорошо выражены"
+            sh.ballardtext66.text = "Яички свободно подвешены в мошонке, хорошо выражены глубокие складки"
 
+    def clear_calculator(self):
+        items = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        for item in items:
+            if isinstance(items[item], MDCheckbox) == False:
+                items[item].text = ""
+
+    def clear_scale(self):
+        items = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        for item in items:
+            if isinstance(items[item], MDCheckbox):
+                items[item].active = False
+            else:
+                items[item].text = ""
 
 if __name__ == '__main__':
     app = MyCalculatorApp()

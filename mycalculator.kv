@@ -54,11 +54,21 @@ MDScreen:
                             MDButtonText:
                                 text: "Расчёт убыли массы тела"                               
                         MDButton:
+                            on_release: menu_manager.current = "kurosurf"
                             MDButtonText:
-                                text: "Калькулятор2"
+                                text: "Расчёт дозы Куросурфа®"
                         MDButton:
+                            on_release: menu_manager.current = "cofe"
                             MDButtonText:
-                                text: "Калькулятор3"
+                                text: "Расчёт дозы кофеина"
+                        MDButton:
+                            on_release: menu_manager.current = "dofamine"
+                            MDButtonText:
+                                text: "Расчёт дозы дофамина"
+                        MDButton:
+                            on_release: menu_manager.current = "neutroindex"
+                            MDButtonText:
+                                text: "Расчёт нейтрофильного индекса"
                         Title:
                             text: "Шкалы"
                         MDButton:
@@ -82,6 +92,10 @@ MDScreen:
                     MDTopAppBarTitle:
                         text: "Поиск..."
         ScreenMassLoss:
+        ScreenKurosurf:
+        ScreenCofe:
+        ScreenDofamine:
+        ScreenNeutroIndex:
         ScreenSilverman:
         ScreenDownes:
         ScreenBallard:
@@ -124,9 +138,6 @@ MDScreen:
         font_style: "Title"
         role: "medium"
 
-<MDCheckbox>:
-    radio_icon_normal: "checkbox-blank-outline"
-    radio_icon_down: "checkbox-marked"
 <TileContainer@MDSmartTileOverlayContainer>:
     adaptive_height: True
     padding: 0, "8dp"
@@ -134,8 +145,6 @@ MDScreen:
 <#MDListItemHeadlineText>:
     #text: "[size=54][/size]"
 <ImageCheckbox@MDCheckbox>:
-    radio_icon_normal: "checkbox-blank-circle-outline"
-    radio_icon_down: "checkbox-marked-circle"
     pos_hint: {"center_y": .1, "center_x": 0}
 <SmartMenu@MDGridLayout>:
     spacing: "6dp"
@@ -215,7 +224,225 @@ MDScreen:
                 active: False
                 CountBar:
             MDNavigationItem:
-                on_release: app.clear_mass()
+                on_release: app.clear_calculator()
+                active: False
+                ClearBar:
+
+<ScreenKurosurf@MDScreen>:
+    name: "kurosurf"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                Header:
+                    text: "Расчёт дозы Куросурфа®\n80 мг/мл (120 мг/фл)"
+                MDGridLayout:
+                    cols: 2
+                    adaptive_height: True
+                    spacing: "6dp"
+                    MDCheckbox:
+                        id: dose1
+                        group: "dose"
+                        on_press: if dose1.active == False: dose1.active = True
+                        active: True
+                    MDLabel:
+                        text: "Стартовая доза 200 мг/кг"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                    MDCheckbox:
+                        id: dose2
+                        group: "dose"
+                        on_press: if dose2.active == False: dose2.active = True                        
+                    MDLabel:
+                        text: "Доза для повторного ввеления 100 мг/кг"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                SubMenuTitle:
+                    text: "Масса тела ребёнка (г)"
+                MDTextField:
+                    id: mass
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Результат" 
+                MDTextField:
+                    id: result1
+                    mode: "outlined"
+                    readonly: True
+                MDTextField:
+                    id: result2
+                    mode: "outlined"
+                    readonly: True
+                MDTextField:
+                    id: result3
+                    mode: "outlined"
+                    readonly: True
+
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.count_kurosurf()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
+                active: False
+                ClearBar:
+
+<ScreenCofe@MDScreen>:
+    name: "cofe"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                Header:
+                    text: "Расчёт дозы кофеина-бензоата натрия\n200 мг/мл"
+                MDGridLayout:
+                    cols: 2
+                    adaptive_height: True
+                    spacing: "6dp"
+                    MDCheckbox:
+                        id: cofe1
+                        group: "cofe"
+                        on_press: if cofe1.active == False: cofe1.active = True
+                        active: True
+                    MDLabel:
+                        text: "Нагрузочная доза 20 мг/кг"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                    MDCheckbox:
+                        id: cofe2
+                        group: "cofe"
+                        on_press: if cofe2.active == False: cofe2.active = True                        
+                    MDLabel:
+                        text: "Поддерживающая доза 5 мг/кг"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                SubMenuTitle:
+                    text: "Масса тела ребёнка (г)"
+                MDTextField:
+                    id: mass
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Результат" 
+                MDTextField:
+                    id: result
+                    mode: "outlined"
+                    readonly: True 
+
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.count_cofe()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
+                active: False
+                ClearBar:
+
+<ScreenDofamine@MDScreen>:
+    name: "dofamine"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                Header:
+                    text: "Расчёт дозы дофамина\n40 мг/мл"
+
+                SubMenuTitle:
+                    text: "Доза (мкг/кг/мин)"
+                MDTextField:
+                    id: dofa
+                    mode: "filled"
+                    input_filter: 'float'
+                    #text: " "
+                    MDTextFieldHintText:
+                        text: "Стартовая доза от 5 мкг/кг/мин"
+                SubMenuTitle:
+                    text: "Масса тела ребёнка (г)"
+                MDTextField:
+                    id: mass
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Результат" 
+                MDTextField:
+                    id: result
+                    mode: "outlined"
+                    readonly: True 
+
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.count_dofamine()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
+                active: False
+                ClearBar:
+
+<ScreenNeutroIndex@MDScreen>:
+    name: "neutroindex"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                Header:
+                    text: "Расчёт нейтрофильного индекса"
+                SubMenuTitle:
+                    text: "Миелоциты (%)"
+                MDTextField:
+                    id: percent1
+                    mode: "filled"
+                    input_filter: 'float'
+                SubMenuTitle:
+                    text: "Юные нейтрофилы (%)"
+                MDTextField:
+                    id: percent2
+                    mode: "filled"
+                    input_filter: 'float'
+                SubMenuTitle:
+                    text: "Палочкоядерные нейтрофилы (%)"
+                MDTextField:
+                    id: percent3
+                    mode: "filled"
+                    input_filter: 'float'
+                SubMenuTitle:
+                    text: "Сегментоядерные нейтрофилы (%)"
+                MDTextField:
+                    id: percent4
+                    mode: "filled"
+                    input_filter: 'float'
+                SubMenuTitle:
+                    text: "Результат"
+                MDTextField:
+                    id: result
+                    mode: "outlined"
+                    readonly: True
+
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.count_neutroindex()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
                 active: False
                 ClearBar:
 
@@ -382,7 +609,7 @@ MDScreen:
                 active: False
                 CountBar:
             MDNavigationItem:
-                on_release: app.clear_silverman()
+                on_release: app.clear_scale()
                 active: False
                 ClearBar:
 
@@ -549,7 +776,7 @@ MDScreen:
                 active: False
                 CountBar:
             MDNavigationItem:
-                on_release: app.clear_downes()
+                on_release: app.clear_scale()
                 active: False
                 ClearBar:
 
@@ -1203,7 +1430,6 @@ MDScreen:
                 SubMenuTitle:
                     text: "Гениталии"
                 MDGridLayout:
-                    id: genit_choice
                     cols: 2
                     adaptive_height: True
                     spacing: "6dp"
@@ -1211,7 +1437,8 @@ MDScreen:
                         id: genit1
                         group: "genit"
                         active: True
-                        on_press: app.change_genit()
+                        on_active: app.change_genit()
+                        on_press: if genit1.active == False: genit1.active = True
                     MDLabel:
                         text: "Мальчик"
                         adaptive_height: True
@@ -1219,7 +1446,8 @@ MDScreen:
                     MDCheckbox:
                         id: genit2
                         group: "genit"
-                        on_press: app.change_genit()
+                        on_active: app.change_genit()
+                        on_press: if genit2.active == False: genit2.active = True 
                     MDLabel:
                         text: "Девочка"
                         adaptive_height: True
@@ -1307,6 +1535,6 @@ MDScreen:
                 active: False
                 CountBar:
             MDNavigationItem:
-                on_release: app. clear_ballard()
+                on_release: app.clear_scale() ; genit1.active = True
                 active: False
                 ClearBar:
