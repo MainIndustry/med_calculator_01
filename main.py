@@ -15,7 +15,7 @@ class MyCalculatorApp(MDApp):
         self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.current = "calculator"
 
     def count_mass(self):
-        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('massloss').ids
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
         if (sh.mass1.text != "") and (sh.mass2.text != ""):
             x1 = int(sh.mass1.text)
             x2 = int(sh.mass2.text)
@@ -29,7 +29,7 @@ class MyCalculatorApp(MDApp):
             sh.result.text = ""
 
     def count_kurosurf(self):
-        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('kurosurf').ids
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
         if sh.mass.text != "":
             x = int(sh.mass.text)
             if sh.dose1.active:
@@ -54,7 +54,7 @@ class MyCalculatorApp(MDApp):
             sh.result3.text = ""
 
     def count_cofe(self):
-        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('cofe').ids
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
         if sh.mass.text != "":
             x = int(sh.mass.text)
             if sh.cofe1.active:
@@ -67,8 +67,8 @@ class MyCalculatorApp(MDApp):
             sh.result.text = ""
 
     def count_dofamine(self):
-        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('dofamine').ids
-        if sh.mass.text != "":
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        if sh.mass.text != "" and sh.dofa.text != "":
             x = int(sh.mass.text)
             dofa = float(sh.dofa.text)
             z = round(((x/1000) * dofa * 24 * 60)/40000, 2)
@@ -76,8 +76,29 @@ class MyCalculatorApp(MDApp):
         else:
             sh.result.text = ""
 
+    def count_metro(self):
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        if sh.mass.text != "" and sh.crat.text != "0":
+            x = int(sh.mass.text)
+            dose = float(sh.dose.text)
+            crat = int(sh.crat.text)
+            z1 = round((x / 1000) * dose, 2)
+            if crat == 1:
+                z2 = z1
+                sh.result1.text = f"{z2} мг/сут"
+                z3 = round(z1/5, 2)
+                sh.result2.text = f"{z3} мл/сут"
+            else:
+                z2 = round(z1 / crat, 2)
+                time = int(24 / crat)
+                sh.result1.text = f"{z2} мг/{time} час"
+                z3 = round(z2 / 5, 2)
+                sh.result2.text = f"{z3} мл/{time} час"
+        else:
+            sh.result1.text = ""
+            sh.result2.text = ""
     def count_neutroindex(self):
-        sh = self.root.ids.nav_manager.get_screen('menu').ids.menu_manager.get_screen('neutroindex').ids
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
         if ((sh.percent1.text != "") and (sh.percent2.text != "") and (sh.percent3.text != "")
                 and (sh.percent4.text != "")):
             x1 = float(sh.percent1.text)

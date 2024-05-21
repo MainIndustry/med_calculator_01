@@ -66,6 +66,10 @@ MDScreen:
                             MDButtonText:
                                 text: "Расчёт дозы дофамина"
                         MDButton:
+                            on_release: menu_manager.current = "metro"
+                            MDButtonText:
+                                text: "Расчёт дозы метронидазола"
+                        MDButton:
                             on_release: menu_manager.current = "neutroindex"
                             MDButtonText:
                                 text: "Расчёт нейтрофильного индекса"
@@ -95,6 +99,7 @@ MDScreen:
         ScreenKurosurf:
         ScreenCofe:
         ScreenDofamine:
+        ScreenMetro:
         ScreenNeutroIndex:
         ScreenSilverman:
         ScreenDownes:
@@ -258,7 +263,7 @@ MDScreen:
                         group: "dose"
                         on_press: if dose2.active == False: dose2.active = True                        
                     MDLabel:
-                        text: "Доза для повторного ввеления 100 мг/кг"
+                        text: "Доза для повторного введения 100 мг/кг"
                         adaptive_height: True
                         pos_hint: {"center_y": .5}
                 SubMenuTitle:
@@ -386,6 +391,57 @@ MDScreen:
         MDNavigationBar:
             MDNavigationItem:
                 on_release: app.count_dofamine()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
+                active: False
+                ClearBar:
+
+<ScreenMetro@MDScreen>:
+    name: "metro"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                Header:
+                    text: "Расчёт дозы метронидазола\n500 мг/100 мл"
+                SubMenuTitle:
+                    text: "Масса тела ребёнка (г)"
+                MDTextField:
+                    id: mass
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Суточная доза (мг/кг/сут)"
+                MDTextField:
+                    id: dose
+                    mode: "filled"
+                    input_filter: 'float'
+                SubMenuTitle:
+                    text: "Кратность введения"
+                MDTextField:
+                    id: crat
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Результат"
+                MDTextField:
+                    id: result1
+                    mode: "outlined"
+                    readonly: True
+                MDTextField:
+                    id: result2
+                    mode: "outlined"
+                    readonly: True
+
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.count_metro()
                 active: False
                 CountBar:
             MDNavigationItem:
