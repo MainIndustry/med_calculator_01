@@ -71,7 +71,7 @@ class MyCalculatorApp(MDApp):
         if sh.mass.text != "":
             x = int(sh.mass.text)
             dofa = float(sh.dofa.text)
-            z = ((x/1000) * dofa * 24 * 60)/40000
+            z = round(((x/1000) * dofa * 24 * 60)/40000, 2)
             sh.result.text = f"{z} мл"
         else:
             sh.result.text = ""
