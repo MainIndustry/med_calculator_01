@@ -78,7 +78,7 @@ class MyCalculatorApp(MDApp):
 
     def count_metro(self):
         sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
-        if sh.mass.text != "" and sh.crat.text != "0":
+        if sh.mass.text != "" and sh.dose.text != "" and sh.crat.text != "0" and sh.crat.text != "":
             x = int(sh.mass.text)
             dose = float(sh.dose.text)
             crat = int(sh.crat.text)
@@ -86,13 +86,75 @@ class MyCalculatorApp(MDApp):
             if crat == 1:
                 z2 = z1
                 sh.result1.text = f"{z2} мг/сут"
-                z3 = round(z1/5, 2)
+                z3 = round(z2/5, 2)
                 sh.result2.text = f"{z3} мл/сут"
             else:
                 z2 = round(z1 / crat, 2)
                 time = int(24 / crat)
                 sh.result1.text = f"{z2} мг/{time} час"
                 z3 = round(z2 / 5, 2)
+                sh.result2.text = f"{z3} мл/{time} час"
+        else:
+            sh.result1.text = ""
+            sh.result2.text = ""
+
+    def auto_count_ampi(self):
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        if sh.mass.text != "" and sh.dose.text != "" and sh.crat.text != "0" and sh.crat.text != "":
+            x = int(sh.mass.text)
+            dose = float(sh.dose.text)
+            crat = int(sh.crat.text)
+            z1 = round((x / 1000) * dose, 2)
+            time = int(24 / crat)
+            if crat == 1:
+                z2 = z1
+                sh.result1.text = f"{z2} мг/сут"
+            else:
+                z2 = round(z1 / crat, 2)
+                sh.result1.text = f"{z2} мг/{time} час"
+            return z2
+        else:
+            sh.result1.text = ""
+
+    def count_ampi(self):
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        if (sh.mass.text != "" and sh.dose.text != "" and sh.crat.text != "0" and sh.crat.text != ""
+                and sh.volume.text != ""):
+            if sh.flacone1.active:
+                flacone = 500
+            elif sh.flacone2.active:
+                flacone = 1000
+            elif sh.flacone3.active:
+                flacone = 2000
+            volume = int(sh.volume.text)
+            z2 = app.auto_count_ampi()
+            z31 = round(flacone/volume, 2)
+            z32 = round(z2/z31, 2)
+            crat = int(sh.crat.text)
+            time = int(24 / crat)
+            if crat == 1:
+                sh.result2.text = f"{z32} мл/сут"
+            else:
+                sh.result2.text = f"{z32} мл/{time} час"
+        else:
+            sh.result2.text = ""
+    def count_genta(self):
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        if sh.mass.text != "" and sh.dose.text != "" and sh.crat.text != "0" and sh.crat.text != "":
+            x = int(sh.mass.text)
+            dose = float(sh.dose.text)
+            crat = int(sh.crat.text)
+            z1 = round((x / 1000) * dose, 2)
+            if crat == 1:
+                z2 = z1
+                sh.result1.text = f"{z2} мг/сут"
+                z3 = round(z2/40, 2)
+                sh.result2.text = f"{z3} мл/сут"
+            else:
+                z2 = round(z1 / crat, 2)
+                time = int(24 / crat)
+                sh.result1.text = f"{z2} мг/{time} час"
+                z3 = round(z2 / 40, 2)
                 sh.result2.text = f"{z3} мл/{time} час"
         else:
             sh.result1.text = ""
@@ -109,6 +171,155 @@ class MyCalculatorApp(MDApp):
             sh.result.text = f"{y}"
         else:
             sh.result.text = ""
+
+    def count_entfunc(self):
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        if sh.mass.text != "" and sh.day.text != "" and sh.day.text != "0":
+            x = int(sh.mass.text)
+            day = int(sh.day.text)
+            z = round((x / 1000) * day * 3)
+            sh.result.text = f"{z} мл"
+        else:
+            sh.result.text = ""
+
+    def auto_count_entzayaz(self):
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        if sh.mass.text != "" and sh.day.text != "" and sh.day.text != "0":
+            x = int(sh.mass.text)
+            day = int(sh.day.text)
+            z = round((x / 100 * 2) * day)
+            if day > 28:
+                sh.result1.text = ""
+            else:
+                if 28 >= day > 10:
+                    if z > round(x/5):
+                        z = round(x/5)
+                        sh.result1.text = f"{z} мл"
+                else:
+                    sh.result1.text = f"{z} мл"
+                return z
+        else:
+            sh.result1.text = ""
+
+    def count_entzayaz(self):
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        if (sh.mass.text != "" and sh.day.text != "" and sh.day.text != "0" and sh.crat.text != ""
+                and sh.crat.text != "0"):
+            crat = int(sh.crat.text)
+            z1 = app.auto_count_entzayaz()
+            z2 = round(z1 / crat)
+            sh.result2.text = f"{z2} мл"
+        else:
+            sh.result2.text = ""
+
+
+
+    def auto_count_entenergy(self):
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        if sh.mass.text != "" and sh.day.text != "" and sh.day.text != "0":
+            x = int(sh.mass.text)
+            day = int(sh.day.text)
+            if day <= 10:
+                energy = 20 + day * 10
+            else:
+                energy = 120
+            sh.energy.text = f"{energy} ккал/кг/сут"
+            z = round(((x / 1000) * 100 * energy)/70)
+            if day > 28:
+                sh.result1.text = ""
+            else:
+                if 28 >= day > 10:
+                    if z > round(x/5):
+                        z = round(x/5)
+                        sh.result1.text = f"{z} мл"
+                else:
+                    sh.result1.text = f"{z} мл"
+                return z
+        elif sh.day.text == "":
+            sh.result1.text = ""
+            sh.energy.text = ""
+        else:
+            sh.result1.text = ""
+
+    def count_entenergy(self):
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        if (sh.mass.text != "" and sh.day.text != "" and sh.day.text != "0" and sh.crat.text != ""
+                and sh.crat.text != "0"):
+            crat = int(sh.crat.text)
+            z1 = app.auto_count_entenergy()
+            z2 = round(z1 / crat)
+            sh.result2.text = f"{z2} мл"
+        else:
+            sh.result2.text = ""
+
+    def count_parent(self):
+        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        # day = int(sh.day.text)
+        if sh.mass.text != "" and sh.physneed.text != "":
+            physneed = float(sh.physneed.text)
+            mass = int(sh.mass.text)/1000
+            dayneed = round(physneed * mass, 1)
+            sh.dayneed.text = f"{dayneed} мл/сут"
+        else:
+            sh.dayneed.text = ""
+        if sh.volumeonetime.text != "" and sh.count.text != "" and sh.dayneed.text != "":
+            if sh.food1.active:
+                x1 = 1
+                x2 = 2
+                x3 = 3
+                x4 = 4
+            elif sh.food2.active:
+                x1 = 7.78
+                x2 = 1.27
+                x3 = 3.42
+                x4 = 67
+            elif sh.food3.active:
+                x1 = 8.4
+                x2 = 2.6
+                x3 = 3.9
+                x4 = 79
+            volumeonetime = float(sh.volumeonetime.text)
+            count = int(sh.count.text)
+            volumephys = round((volumeonetime * count)/mass, 1)
+            sh.volumephys.text = f"{volumephys} мл/кг/сут"
+            if volumephys < 25:
+                volumeent = 0
+                sh.volumeent.multiline = True
+                sh.volumeent.text = "Объём энтерального питания не превышает трофический (25 мл/кг/сут)"
+                ugle = 0
+                belki = 0
+                zhiry = 0
+                kkal = 0
+                sh.ugle.text = "---"
+                sh.belki.text = "---"
+                sh.zhiry.text = "---"
+                sh.kkal.text = "---"
+            else:
+                volumeent = round(volumeonetime * count, 1)
+                sh.volumeent.multiline = False
+                sh.volumeent.text = f"{volumeent} мл/сут"
+                ugle = round(volumeent*x1/100, 2)
+                belki = round(volumeent*x2/100, 2)
+                zhiry = round(volumeent*x3/100, 2)
+                kkal = round(volumeent*x4/100, 2)
+                sh.ugle.text = f"{ugle} г"
+                sh.belki.text = f"{belki} г/кг/сут"
+                sh.zhiry.text = f"{zhiry} г/кг/сут"
+                sh.kkal.text = f"{kkal} ккал"
+        else:
+            sh.volumephys.text = ""
+            sh.volumeent.text = ""
+            sh.ugle.text = ""
+            sh.belki.text = ""
+            sh.zhiry.text = ""
+            sh.kkal.text = ""
+        if sh.dayneed.text != "" and sh.volumeent.text != "" and sh.bolus.text != "" :
+            bolus = float(sh.bolus.text)
+            dayneedent = round(dayneed - volumeent - bolus, 1)
+            sh.dayneedent.text = f"{dayneedent} мл/сут"
+        else:
+            sh.dayneedent.text = ""
+
 
     def count_silverman(self):
         c1 = ToggleButtonBehavior.get_widgets('silver1')

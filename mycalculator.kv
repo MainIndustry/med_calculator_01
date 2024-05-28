@@ -70,9 +70,33 @@ MDScreen:
                             MDButtonText:
                                 text: "Расчёт дозы метронидазола"
                         MDButton:
+                            on_release: menu_manager.current = "ampi"
+                            MDButtonText:
+                                text: "Расчёт дозы ампициллина"
+                        MDButton:
+                            on_release: menu_manager.current = "genta"
+                            MDButtonText:
+                                text: "Расчёт дозы гентамицина"
+                        MDButton:
                             on_release: menu_manager.current = "neutroindex"
                             MDButtonText:
                                 text: "Расчёт нейтрофильного индекса"
+                        MDButton:
+                            on_release: menu_manager.current = "entfunc"
+                            MDButtonText:
+                                text: "Расчёт энтерального питания по функциональной вместимости желудка"
+                        MDButton:
+                            on_release: menu_manager.current = "entzayaz"
+                            MDButtonText:
+                                text: "Расчёт энтерального питания по формуле Г.И. Зайцевой"
+                        MDButton:
+                            on_release: menu_manager.current = "entenergy"
+                            MDButtonText:
+                                text: "Расчёт энтерального питания по энергетическому способу"
+                        MDButton:
+                            on_release: menu_manager.current = "parent"
+                            MDButtonText:
+                                text: "Расчёт парентерального питания"
                         Title:
                             text: "Шкалы"
                         MDButton:
@@ -100,7 +124,13 @@ MDScreen:
         ScreenCofe:
         ScreenDofamine:
         ScreenMetro:
+        ScreenAmpi:
+        ScreenGenta:
         ScreenNeutroIndex:
+        ScreenEntFunc:
+        ScreenEntZayaz:
+        ScreenEntEnergy:
+        ScreenParent:
         ScreenSilverman:
         ScreenDownes:
         ScreenBallard:
@@ -449,6 +479,150 @@ MDScreen:
                 active: False
                 ClearBar:
 
+<ScreenAmpi@MDScreen>:
+    name: "ampi"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                Header:
+                    text: "Расчёт дозы ампициллина"
+                SubMenuTitle:
+                    text: "Масса тела ребёнка (г)"
+                MDTextField:
+                    id: mass
+                    mode: "filled"
+                    input_filter: 'int'
+                    on_text: app.auto_count_ampi()
+                SubMenuTitle:
+                    text: "Суточная доза (мг/кг/сут)"
+                MDTextField:
+                    id: dose
+                    mode: "filled"
+                    input_filter: 'float'
+                    on_text: app.auto_count_ampi()
+                SubMenuTitle:
+                    text: "Кратность введения"
+                MDTextField:
+                    id: crat
+                    mode: "filled"
+                    input_filter: 'int'
+                    on_text: app.auto_count_ampi()
+                SubMenuTitle:
+                    text: "Разовая доза в мг"
+                MDTextField:
+                    id: result1
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Содержание в 1 флаконе"
+                MDGridLayout:
+                    cols: 2
+                    adaptive_height: True
+                    spacing: "6dp"
+                    MDCheckbox:
+                        id: flacone1
+                        group: "flacone"
+                        on_press: if flacone1.active == False: flacone1.active = True
+                        active: True
+                    MDLabel:
+                        text: "500 мг/фл"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                    MDCheckbox:
+                        id: flacone2
+                        group: "flacone"
+                        on_press: if flacone2.active == False: flacone2.active = True                        
+                    MDLabel:
+                        text: "1000 мг/фл"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                    MDCheckbox:
+                        id: flacone3
+                        group: "flacone"
+                        on_press: if flacone3.active == False: flacone3.active = True                        
+                    MDLabel:
+                        text: "2000 мг/фл"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                SubMenuTitle:
+                    text: "Объём растворителя (мл)"
+                MDTextField:
+                    id: volume
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Разовая доза в мл"
+                MDTextField:
+                    id: result2
+                    mode: "outlined"
+                    readonly: True
+
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.count_ampi()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
+                active: False
+                ClearBar:
+
+<ScreenGenta@MDScreen>:
+    name: "genta"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                Header:
+                    text: "Расчёт дозы гентамицина\n40 мг/мл"
+                SubMenuTitle:
+                    text: "Масса тела ребёнка (г)"
+                MDTextField:
+                    id: mass
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Суточная доза (мг/кг/сут)"
+                MDTextField:
+                    id: dose
+                    mode: "filled"
+                    input_filter: 'float'
+                SubMenuTitle:
+                    text: "Кратность введения"
+                MDTextField:
+                    id: crat
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Результат"
+                MDTextField:
+                    id: result1
+                    mode: "outlined"
+                    readonly: True
+                MDTextField:
+                    id: result2
+                    mode: "outlined"
+                    readonly: True
+
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.count_genta()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
+                active: False
+                ClearBar:
+
 <ScreenNeutroIndex@MDScreen>:
     name: "neutroindex"
     MDBoxLayout:
@@ -495,6 +669,318 @@ MDScreen:
         MDNavigationBar:
             MDNavigationItem:
                 on_release: app.count_neutroindex()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
+                active: False
+                ClearBar:
+
+<ScreenEntFunc@MDScreen>:
+    name: "entfunc"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                Header:
+                    text: "Расчёт энтерального питания по функциональной вместимости желудка"
+                SubMenuTitle:
+                    text: "Масса при рождении (г)"
+                MDTextField:
+                    id: mass
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "День жизни"
+                MDTextField:
+                    id: day
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Количество молока на одно кормление:"
+                MDTextField:
+                    id: result
+                    mode: "outlined"
+                    readonly: True
+
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.count_entfunc()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
+                active: False
+                ClearBar:
+
+<ScreenEntZayaz@MDScreen>:
+    name: "entzayaz"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                Header:
+                    text: "Расчёт энтерального питания по формуле Г.И. Зайцевой"
+                SubMenuTitle:
+                    text: "Масса при рождении (г)"
+                MDTextField:
+                    id: mass
+                    mode: "filled"
+                    input_filter: 'int'
+                    on_text: app.auto_count_entzayaz()
+                SubMenuTitle:
+                    text: "День жизни"
+                MDTextField:
+                    id: day
+                    mode: "filled"
+                    input_filter: 'int'
+                    on_text: app.auto_count_entzayaz()
+                SubMenuTitle:
+                    text: "Суточное количество молока:"
+                MDTextField:
+                    id: result1
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Число кормлений в сутки"
+                MDTextField:
+                    id: crat
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Количество молока на одно кормление:"
+                MDTextField:
+                    id: result2
+                    mode: "outlined"
+                    readonly: True
+
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.count_entzayaz()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
+                active: False
+                ClearBar:
+
+<ScreenEntEnergy@MDScreen>:
+    name: "entenergy"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                Header:
+                    text: "Расчёт энтерального питания по энергетическому способу"
+                SubMenuTitle:
+                    text: "Масса при рождении (г)"
+                MDTextField:
+                    id: mass
+                    mode: "filled"
+                    input_filter: 'int'
+                    on_text: app.auto_count_entenergy()
+                SubMenuTitle:
+                    text: "День жизни"
+                MDTextField:
+                    id: day
+                    mode: "filled"
+                    input_filter: 'int'
+                    on_text: app.auto_count_entenergy()
+                SubMenuTitle:
+                    text: "Потребность в энергии (ккал/кг/сут)"
+                MDTextField:
+                    id: energy
+                    mode: "filled"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Суточное количество молока:"
+                MDTextField:
+                    id: result1
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Число кормлений в сутки"
+                MDTextField:
+                    id: crat
+                    mode: "filled"
+                    input_filter: 'int'
+                SubMenuTitle:
+                    text: "Количество молока на одно кормление:"
+                MDTextField:
+                    id: result2
+                    mode: "outlined"
+                    readonly: True
+
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.count_entenergy()
+                active: False
+                CountBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
+                active: False
+                ClearBar:
+
+<ScreenParent@MDScreen>:
+    name: "parent"
+    MDBoxLayout:
+        orientation: 'vertical'
+        #spacing: "12dp"
+
+        TopMenu2:
+
+        ScrollView:
+            ScrollMenu:
+                id: parent_scroll  
+                Header:
+                    text: "Расчёт парентерального питания"
+                Title:
+                    text: "Расчёт суточного объёма жидкости"
+                SubMenuTitle:
+                    text: "Физиологическая потребность (мл/кг)"
+                MDTextField:
+                    id: physneed
+                    mode: "filled"
+                    input_filter: 'float'
+                    on_text: app.count_parent()
+                SubMenuTitle:
+                    text: "Масса тела (г)"
+                MDTextField:
+                    id: mass
+                    mode: "filled"
+                    input_filter: 'int'
+                    on_text: app.count_parent()
+                SubMenuTitle:
+                    text: "Суточная потребность (мл/сут):"
+                MDTextField:
+                    id: dayneed
+                    mode: "outlined"
+                    readonly: True
+                Title:
+                    text: "Расчёт объёма энтерального питания"
+                SubMenuTitle:
+                    text: "Энтерально получает:"
+                MDGridLayout:
+                    cols: 2
+                    adaptive_height: True
+                    spacing: "6dp"
+                    MDCheckbox:
+                        id: food1
+                        group: "food"
+                        on_press: if food1.active == False: food1.active = True
+                        on_press: app.count_parent() 
+                        active: True
+                    MDLabel:
+                        text: "Грудное молоко"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                    MDCheckbox:
+                        id: food2
+                        group: "food"
+                        on_press: if food2.active == False: food2.active = True
+                        on_press: app.count_parent() 
+                    MDLabel:
+                        text: "Смесь для доношенных"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                    MDCheckbox:
+                        id: food3
+                        group: "food"
+                        on_press: if food3.active == False: food3.active = True 
+                        on_press: app.count_parent()                       
+                    MDLabel:
+                        text: "Смесь для недоношенных"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                SubMenuTitle:
+                    text: "Объём разового кормления (мл)"
+                MDTextField:
+                    id: volumeonetime
+                    mode: "filled"
+                    input_filter: 'float'
+                    on_text: app.count_parent()
+                SubMenuTitle:
+                    text: "Число кормлений (раз/сут)"
+                MDTextField:
+                    id: count
+                    mode: "filled"
+                    input_filter: 'int'
+                    on_text: app.count_parent()
+                SubMenuTitle:
+                    text: "Объём питания на кг массы (мл/кг/сут):"
+                MDTextField:
+                    id: volumephys
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Объём энтерального питания (мл/сут):"
+                MDTextField:
+                    id: volumeent
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Углеводов энтерально:"
+                MDTextField:
+                    id: ugle
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Белка энтерально:"
+                MDTextField:
+                    id: belki
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Жиров энтерально:"
+                MDTextField:
+                    id: zhiry
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Калорий энтерально:"
+                MDTextField:
+                    id: kkal
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Объём препаратов вводимых внутривенно (болюсы) (мл):"
+                MDTextField:
+                    id: bolus
+                    mode: "filled"
+                    input_filter: 'float'
+                    on_text: app.count_parent()
+                SubMenuTitle:
+                    text: "Суточная доза жидкости с учетом энтерального питания и болюсов (мл/сут)"
+                MDTextField:
+                    id: dayneedent
+                    mode: "outlined"
+                    readonly: True
+                Title:
+                    text: "Расчёт суточного объема раствора белка"
+                SubMenuTitle:
+                    text: "Расчетная доза (г/кг)"
+                MDTextField:
+                    id: dosebelki
+                    mode: "filled"
+                    input_filter: 'float'
+                    on_text: app.count_parent()
+                 
+
+        MDNavigationBar:
+            MDNavigationItem:
+                #on_release: app.count_entenergy()
                 active: False
                 CountBar:
             MDNavigationItem:
