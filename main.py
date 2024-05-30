@@ -36,18 +36,20 @@ class MyCalculatorApp(MDApp):
                 dose = 200
             elif sh.dose2.active:
                 dose = 100
-            z1 = (x/1000) * dose
-            z2 = round((z1 / 80), 1)
-            z3 = math.ceil(z2/1.5)
-            sh.result1.text = f"{z1} мг"
-            sh.result2.text = f"{z2} мл"
-            match (z3 % 10):
-                case 1:
-                    sh.result3.text = f"{z3} флакон"
-                case 2 | 3 | 4:
-                    sh.result3.text = f"{z3} флакона"
-                case 5 | 6 | 7 | 8 | 9 | 0:
-                    sh.result3.text = f"{z3} флаконов"
+            for widget in ToggleButtonBehavior.get_widgets('dose'):
+                if widget.active:
+                    z1 = (x/1000) * dose
+                    z2 = round((z1 / 80), 1)
+                    z3 = math.ceil(z2/1.5)
+                    sh.result1.text = f"{z1} мг"
+                    sh.result2.text = f"{z2} мл"
+                    match (z3 % 10):
+                        case 1:
+                            sh.result3.text = f"{z3} флакон"
+                        case 2 | 3 | 4:
+                            sh.result3.text = f"{z3} флакона"
+                        case 5 | 6 | 7 | 8 | 9 | 0:
+                            sh.result3.text = f"{z3} флаконов"
         else:
             sh.result1.text = ""
             sh.result2.text = ""
@@ -61,8 +63,10 @@ class MyCalculatorApp(MDApp):
                 cofe = 20
             elif sh.cofe2.active:
                 cofe = 5
-            z = (x/1000) * cofe
-            sh.result.text = f"{z} мг"
+            for widget in ToggleButtonBehavior.get_widgets('cofe'):
+                if widget.active:
+                    z = (x/1000) * cofe
+                    sh.result.text = f"{z} мг"
         else:
             sh.result.text = ""
 
@@ -98,7 +102,7 @@ class MyCalculatorApp(MDApp):
             sh.result1.text = ""
             sh.result2.text = ""
 
-    def auto_count_ampi(self):
+    def count_ampi(self):
         sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
         if sh.mass.text != "" and sh.dose.text != "" and sh.crat.text != "0" and sh.crat.text != "":
             x = int(sh.mass.text)
@@ -112,30 +116,24 @@ class MyCalculatorApp(MDApp):
             else:
                 z2 = round(z1 / crat, 2)
                 sh.result1.text = f"{z2} мг/{time} час"
-            return z2
         else:
             sh.result1.text = ""
-
-    def count_ampi(self):
-        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
-        if (sh.mass.text != "" and sh.dose.text != "" and sh.crat.text != "0" and sh.crat.text != ""
-                and sh.volume.text != ""):
-            if sh.flacone1.active:
-                flacone = 500
-            elif sh.flacone2.active:
-                flacone = 1000
-            elif sh.flacone3.active:
-                flacone = 2000
+        if sh.flacone1.active:
+            flacone = 500
+        elif sh.flacone2.active:
+            flacone = 1000
+        elif sh.flacone3.active:
+            flacone = 2000
+        if sh.result1.text != "" and sh.crat.text != "0" and sh.crat.text != "" and sh.volume.text != "":
             volume = int(sh.volume.text)
-            z2 = app.auto_count_ampi()
-            z31 = round(flacone/volume, 2)
-            z32 = round(z2/z31, 2)
-            crat = int(sh.crat.text)
-            time = int(24 / crat)
-            if crat == 1:
-                sh.result2.text = f"{z32} мл/сут"
-            else:
-                sh.result2.text = f"{z32} мл/{time} час"
+            for widget in ToggleButtonBehavior.get_widgets('flacone'):
+                if widget.active:
+                    z31 = round(flacone/volume, 2)
+                    z32 = round(z2/z31, 2)
+                    if crat == 1:
+                        sh.result2.text = f"{z32} мл/сут"
+                    else:
+                        sh.result2.text = f"{z32} мл/{time} час"
         else:
             sh.result2.text = ""
     def count_genta(self):
@@ -161,14 +159,17 @@ class MyCalculatorApp(MDApp):
             sh.result2.text = ""
     def count_neutroindex(self):
         sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
-        if ((sh.percent1.text != "") and (sh.percent2.text != "") and (sh.percent3.text != "")
-                and (sh.percent4.text != "")):
+        if (sh.percent1.text != "" and sh.percent2.text != "" and sh.percent3.text != ""
+                and sh.percent4.text != ""):
             x1 = float(sh.percent1.text)
             x2 = float(sh.percent2.text)
             x3 = float(sh.percent3.text)
             x4 = float(sh.percent4.text)
             y = round(((x1 + x2 + x3) / x4), 2)
-            sh.result.text = f"{y}"
+            if (x1+x2+x3+x4) >= 100:
+                sh.result.text = ""
+            else:
+                sh.result.text = f"{y}"
         else:
             sh.result.text = ""
 
@@ -182,31 +183,25 @@ class MyCalculatorApp(MDApp):
         else:
             sh.result.text = ""
 
-    def auto_count_entzayaz(self):
+    def count_entzayaz(self):
         sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
         if sh.mass.text != "" and sh.day.text != "" and sh.day.text != "0":
             x = int(sh.mass.text)
             day = int(sh.day.text)
-            z = round((x / 100 * 2) * day)
+            z1 = round((x / 100 * 2) * day)
             if day > 28:
                 sh.result1.text = ""
             else:
                 if 28 >= day > 10:
-                    if z > round(x/5):
-                        z = round(x/5)
-                        sh.result1.text = f"{z} мл"
+                    if z1 > round(x/5):
+                        z1 = round(x/5)
+                        sh.result1.text = f"{z1} мл"
                 else:
-                    sh.result1.text = f"{z} мл"
-                return z
+                    sh.result1.text = f"{z1} мл"
         else:
             sh.result1.text = ""
-
-    def count_entzayaz(self):
-        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
-        if (sh.mass.text != "" and sh.day.text != "" and sh.day.text != "0" and sh.crat.text != ""
-                and sh.crat.text != "0"):
+        if sh.result1.text != ""  and sh.crat.text != "" and sh.crat.text != "0":
             crat = int(sh.crat.text)
-            z1 = app.auto_count_entzayaz()
             z2 = round(z1 / crat)
             sh.result2.text = f"{z2} мл"
         else:
@@ -214,7 +209,7 @@ class MyCalculatorApp(MDApp):
 
 
 
-    def auto_count_entenergy(self):
+    def count_entenergy(self):
         sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
         if sh.mass.text != "" and sh.day.text != "" and sh.day.text != "0":
             x = int(sh.mass.text)
@@ -224,29 +219,21 @@ class MyCalculatorApp(MDApp):
             else:
                 energy = 120
             sh.energy.text = f"{energy} ккал/кг/сут"
-            z = round(((x / 1000) * 100 * energy)/70)
+            z1 = round(((x / 1000) * 100 * energy)/70)
             if day > 28:
                 sh.result1.text = ""
             else:
                 if 28 >= day > 10:
-                    if z > round(x/5):
-                        z = round(x/5)
-                        sh.result1.text = f"{z} мл"
+                    if z1 > round(x/5):
+                        z1 = round(x/5)
+                        sh.result1.text = f"{z1} мл"
                 else:
-                    sh.result1.text = f"{z} мл"
-                return z
-        elif sh.day.text == "":
-            sh.result1.text = ""
-            sh.energy.text = ""
+                    sh.result1.text = f"{z1} мл"
         else:
             sh.result1.text = ""
-
-    def count_entenergy(self):
-        sh = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
-        if (sh.mass.text != "" and sh.day.text != "" and sh.day.text != "0" and sh.crat.text != ""
-                and sh.crat.text != "0"):
+            sh.energy.text = ""
+        if sh.result1.text != "" and sh.crat.text != "" and sh.crat.text != "0":
             crat = int(sh.crat.text)
-            z1 = app.auto_count_entenergy()
             z2 = round(z1 / crat)
             sh.result2.text = f"{z2} мл"
         else:
@@ -282,30 +269,32 @@ class MyCalculatorApp(MDApp):
             count = int(sh.count.text)
             volumephys = round((volumeonetime * count)/mass, 1)
             sh.volumephys.text = f"{volumephys} мл/кг/сут"
-            if volumephys < 25:
-                volumeent = 0
-                sh.volumeent.multiline = True
-                sh.volumeent.text = "Объём энтерального питания не превышает трофический (25 мл/кг/сут)"
-                ugle = 0
-                belki = 0
-                zhiry = 0
-                kkal = 0
-                sh.ugle.text = "---"
-                sh.belki.text = "---"
-                sh.zhiry.text = "---"
-                sh.kkal.text = "---"
-            else:
-                volumeent = round(volumeonetime * count, 1)
-                sh.volumeent.multiline = False
-                sh.volumeent.text = f"{volumeent} мл/сут"
-                ugle = round(volumeent*x1/100, 2)
-                belki = round(volumeent*x2/100, 2)
-                zhiry = round(volumeent*x3/100, 2)
-                kkal = round(volumeent*x4/100, 2)
-                sh.ugle.text = f"{ugle} г"
-                sh.belki.text = f"{belki} г/кг/сут"
-                sh.zhiry.text = f"{zhiry} г/кг/сут"
-                sh.kkal.text = f"{kkal} ккал"
+            for widget in ToggleButtonBehavior.get_widgets('food'):
+                if widget.active:
+                    if volumephys < 25:
+                        volumeent = 0
+                        sh.volumeent.multiline = True
+                        sh.volumeent.text = "Объём энтерального питания не превышает трофический (25 мл/кг/сут)"
+                        ugle = 0
+                        belki = 0
+                        zhiry = 0
+                        kkal = 0
+                        sh.ugle.text = "---"
+                        sh.belki.text = "---"
+                        sh.zhiry.text = "---"
+                        sh.kkal.text = "---"
+                    else:
+                        volumeent = round(volumeonetime * count, 1)
+                        sh.volumeent.multiline = False
+                        sh.volumeent.text = f"{volumeent} мл/сут"
+                        ugle = round(volumeent*x1/100, 2)
+                        belki = round(volumeent*x2/100, 2)
+                        zhiry = round(volumeent*x3/100, 2)
+                        kkal = round(volumeent*x4/100, 2)
+                        sh.ugle.text = f"{ugle} г"
+                        sh.belki.text = f"{belki} г/кг/сут"
+                        sh.zhiry.text = f"{zhiry} г/кг/сут"
+                        sh.kkal.text = f"{kkal} ккал"
         else:
             sh.volumephys.text = ""
             sh.volumeent.text = ""
@@ -319,6 +308,112 @@ class MyCalculatorApp(MDApp):
             sh.dayneedent.text = f"{dayneedent} мл/сут"
         else:
             sh.dayneedent.text = ""
+        if sh.dosebelki.text != "" and sh.belki.text != "":
+            dosebelki = float(sh.dosebelki.text)
+            daydosebelki = round((dosebelki * mass - belki), 1)
+            sh.daydosebelki.text = f"{daydosebelki} г/сут"
+            amino = round((daydosebelki * 10), 1)
+            sh.amino.text = f"{amino} мл/сут"
+        else:
+            sh.daydosebelki.text = ""
+            sh.amino.text = ""
+        if sh.dosezhiry.text != "" and sh.zhiry.text != "":
+            dosezhiry = float(sh.dosezhiry.text)
+            daydosezhiry = round((dosezhiry * mass - zhiry), 2)
+            sh.daydosezhiry.text = f"{daydosezhiry} г/сут"
+            amulszhiry = round((daydosezhiry * 5), 1)
+            sh.amulszhiry.text = f"{amulszhiry} мл/сут"
+        else:
+            sh.daydosezhiry.text = ""
+            sh.amulszhiry.text = ""
+        if sh.na_need.text != "" and sh.mass.text != "":
+            na_need = float(sh.na_need.text)
+            na_dose = round((na_need * mass)/0.15, 1)
+            sh.na_dose.text = f"{na_dose} мл/сут"
+        else:
+            sh.na_dose.text = ""
+        if sh.k_need.text != "" and sh.mass.text != "":
+            k_need = float(sh.k_need.text)
+            k_dose = round(k_need * mass * 1.85, 1)
+            sh.k_dose.text = f"{k_dose} мл/сут"
+        else:
+            sh.k_dose.text = ""
+        if sh.ca_need.text != "" and sh.mass.text != "":
+            ca_need = float(sh.ca_need.text)
+            ca_dose = round(ca_need * mass * 3.3, 1)
+            sh.ca_dose.text = f"{ca_dose} мл/сут"
+        else:
+            sh.ca_dose.text = ""
+        if sh.mg_need.text != "" and sh.mass.text != "":
+            mg_need = float(sh.mg_need.text)
+            mg_dose = round((mg_need * mass)/250, 1)
+            sh.mg_dose.text = f"{mg_dose} мл/сут"
+        else:
+            sh.mg_dose.text = ""
+
+        if sh.ugleneed.text != "" and sh.mass.text != "":
+            ugleneed = float(sh.ugleneed.text)
+            daydoseugle = round((mass * ugleneed * 1.44),1)
+            sh.daydoseugle.text = f"{daydoseugle} г/сут"
+        else:
+            sh.daydoseugle.text = ""
+
+        if (sh.na_dose.text != "" and sh.k_dose.text != "" and sh.ca_dose.text != "" and sh.mg_dose.text != ""
+            and sh.amino.text != "" and sh.amulszhiry.text != "" and sh.dayneedent.text != ""):
+            doseugle = round((dayneedent - amino - amulszhiry - na_dose - k_dose - ca_dose - mg_dose),1)
+            sh.doseugle.text = f"{doseugle} мл/сут"
+        else:
+            sh.doseugle.text = ""
+        if sh.conc1.active:
+            y1 = 5
+            y2 = 10
+        elif sh.conc2.active:
+            y1 = 5
+            y2 = 40
+        elif sh.conc3.active:
+            y1 = 10
+            y2 = 40
+        for widget in ToggleButtonBehavior.get_widgets('conc'):
+            if widget.active:
+                sh.gluk_text1.text = f"Объём раствора глюкозы {y1}% (мл/сут)"
+                sh.gluk_text2.text = f"Объём раствора глюкозы {y2}% (мл/сут)"
+                if (sh.daydoseugle.text != "" and sh.doseugle.text != ""):
+                    v2 = round((daydoseugle * 100 - y1 * doseugle)/(y2-y1), 1)
+                    v1 = round(doseugle - v2, 1)
+                    if v2 > doseugle:
+                        sh.gluk1.text = "Выберите другие концентрации"
+                        sh.gluk2.text = "Выберите другие концентрации"
+                    elif v2 == doseugle:
+                        sh.gluk1.text = "---"
+                        sh.gluk2.text = f"{v2} мл/сут"
+                    else:
+                        sh.gluk1.text = f"{v1} мл/сут"
+                        sh.gluk2.text = f"{v2} мл/сут"
+                else:
+                    sh.gluk1.text = ""
+                    sh.gluk2.text = ""
+        if sh.dayneedent.text != "" and sh.amulszhiry.text != "":
+            speed1 = round((dayneedent - amulszhiry)/24, 1)
+            speed2 = round(amulszhiry/24, 1)
+            sh.speed1.text = f"{speed1} мл/ч"
+            sh.speed2.text = f"{speed2} мл/ч"
+        else:
+            sh.speed1.text = ""
+            sh.speed2.text = ""
+        if sh.daydoseugle.text != "" and sh.dayneedent.text != "" and sh.amulszhiry.text != "":
+            concgluk = round(daydoseugle*100/(dayneedent - amulszhiry), 1)
+            sh.concgluk.text = f"{concgluk}%"
+        else:
+            sh.concgluk.text = ""
+        if sh.kkal.text != "" and sh.daydoseugle.text != "" and sh.daydosezhiry.text != "" and sh.mass.text != "":
+            kkalparent = (daydosezhiry * 9) + (daydoseugle * 4)
+            sh.kkalparent.text = f"{kkalparent} ккал/сут"
+            kkalsum = round((kkal + kkalparent)/mass, 1)
+            sh.kkalsum.text = f"{kkalsum} ккал/сут/кг"
+        else:
+            sh.kkalparent.text = ""
+            sh.kkalsum.text = ""
+
 
 
     def count_silverman(self):

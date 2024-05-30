@@ -84,15 +84,15 @@ MDScreen:
                         MDButton:
                             on_release: menu_manager.current = "entfunc"
                             MDButtonText:
-                                text: "Расчёт энтерального питания по функциональной вместимости желудка"
+                                text: "Расчёт энтерального питания\nпо функциональной вместимости желудка"
                         MDButton:
                             on_release: menu_manager.current = "entzayaz"
                             MDButtonText:
-                                text: "Расчёт энтерального питания по формуле Г.И. Зайцевой"
+                                text: "Расчёт энтерального питания\nпо формуле Г.И. Зайцевой"
                         MDButton:
                             on_release: menu_manager.current = "entenergy"
                             MDButtonText:
-                                text: "Расчёт энтерального питания по энергетическому способу"
+                                text: "Расчёт энтерального питания\nпо энергетическому способу"
                         MDButton:
                             on_release: menu_manager.current = "parent"
                             MDButtonText:
@@ -114,11 +114,11 @@ MDScreen:
 
                 MDTopAppBar:
                     size_hint_y: .2
-                    MDTopAppBarLeadingButtonContainer:
-                        MDActionTopAppBarButton:
-                            icon: "magnify"
-                    MDTopAppBarTitle:
-                        text: "Поиск..."
+                    #MDTopAppBarLeadingButtonContainer:
+                        #MDActionTopAppBarButton:
+                            #icon: "magnify"
+                    #MDTopAppBarTitle:
+                        #text: "Поиск..."
         ScreenMassLoss:
         ScreenKurosurf:
         ScreenCofe:
@@ -221,6 +221,11 @@ MDScreen:
 <ClearBar@MDNavigationItemLabel>:
     text: "Очистить форму"
     pos_hint: {"center_x": .5, "center_y": 0}
+<BottomMenu@MDNavigationBar>:
+    MDNavigationItem:
+        on_release: app.clear_calculator()
+        active: False
+        ClearBar:
 
 <ScreenMassLoss@MDScreen>:
     name: "massloss"
@@ -240,12 +245,14 @@ MDScreen:
                     id: mass1
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_mass()
                 SubMenuTitle:
                     text: "Настоящая масса (г)"
                 MDTextField:
                     id: mass2
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_mass()
                 SubMenuTitle:
                     text: "Потеря массы тела" 
                 MDTextField:
@@ -253,15 +260,7 @@ MDScreen:
                     mode: "outlined"
                     readonly: True
 
-        MDNavigationBar:
-            MDNavigationItem:
-                on_release: app.count_mass()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+        BottomMenu:
 
 <ScreenKurosurf@MDScreen>:
     name: "kurosurf"
@@ -282,7 +281,7 @@ MDScreen:
                     MDCheckbox:
                         id: dose1
                         group: "dose"
-                        on_press: if dose1.active == False: dose1.active = True
+                        on_press: app.count_kurosurf() ; dose1.active = True
                         active: True
                     MDLabel:
                         text: "Стартовая доза 200 мг/кг"
@@ -291,7 +290,7 @@ MDScreen:
                     MDCheckbox:
                         id: dose2
                         group: "dose"
-                        on_press: if dose2.active == False: dose2.active = True                        
+                        on_press: app.count_kurosurf() ; dose2.active = True                        
                     MDLabel:
                         text: "Доза для повторного введения 100 мг/кг"
                         adaptive_height: True
@@ -302,6 +301,7 @@ MDScreen:
                     id: mass
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_kurosurf()
                 SubMenuTitle:
                     text: "Результат" 
                 MDTextField:
@@ -317,15 +317,7 @@ MDScreen:
                     mode: "outlined"
                     readonly: True
 
-        MDNavigationBar:
-            MDNavigationItem:
-                on_release: app.count_kurosurf()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+        BottomMenu:
 
 <ScreenCofe@MDScreen>:
     name: "cofe"
@@ -346,7 +338,7 @@ MDScreen:
                     MDCheckbox:
                         id: cofe1
                         group: "cofe"
-                        on_press: if cofe1.active == False: cofe1.active = True
+                        on_press: app.count_cofe() ; cofe1.active = True  
                         active: True
                     MDLabel:
                         text: "Нагрузочная доза 20 мг/кг"
@@ -355,7 +347,7 @@ MDScreen:
                     MDCheckbox:
                         id: cofe2
                         group: "cofe"
-                        on_press: if cofe2.active == False: cofe2.active = True                        
+                        on_press: app.count_cofe() ; cofe2.active = True                        
                     MDLabel:
                         text: "Поддерживающая доза 5 мг/кг"
                         adaptive_height: True
@@ -366,6 +358,7 @@ MDScreen:
                     id: mass
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_cofe()
                 SubMenuTitle:
                     text: "Результат" 
                 MDTextField:
@@ -373,15 +366,7 @@ MDScreen:
                     mode: "outlined"
                     readonly: True 
 
-        MDNavigationBar:
-            MDNavigationItem:
-                on_release: app.count_cofe()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+        BottomMenu:
 
 <ScreenDofamine@MDScreen>:
     name: "dofamine"
@@ -402,7 +387,7 @@ MDScreen:
                     id: dofa
                     mode: "filled"
                     input_filter: 'float'
-                    #text: " "
+                    on_text: app.count_dofamine()
                     MDTextFieldHintText:
                         text: "Стартовая доза от 5 мкг/кг/мин"
                 SubMenuTitle:
@@ -411,6 +396,7 @@ MDScreen:
                     id: mass
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_dofamine()
                 SubMenuTitle:
                     text: "Результат" 
                 MDTextField:
@@ -418,15 +404,7 @@ MDScreen:
                     mode: "outlined"
                     readonly: True 
 
-        MDNavigationBar:
-            MDNavigationItem:
-                on_release: app.count_dofamine()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+        BottomMenu:
 
 <ScreenMetro@MDScreen>:
     name: "metro"
@@ -446,18 +424,21 @@ MDScreen:
                     id: mass
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_metro()
                 SubMenuTitle:
                     text: "Суточная доза (мг/кг/сут)"
                 MDTextField:
                     id: dose
                     mode: "filled"
                     input_filter: 'float'
+                    on_text: app.count_metro()
                 SubMenuTitle:
                     text: "Кратность введения"
                 MDTextField:
                     id: crat
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_metro()
                 SubMenuTitle:
                     text: "Результат"
                 MDTextField:
@@ -469,15 +450,7 @@ MDScreen:
                     mode: "outlined"
                     readonly: True
 
-        MDNavigationBar:
-            MDNavigationItem:
-                on_release: app.count_metro()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+        BottomMenu:
 
 <ScreenAmpi@MDScreen>:
     name: "ampi"
@@ -497,21 +470,21 @@ MDScreen:
                     id: mass
                     mode: "filled"
                     input_filter: 'int'
-                    on_text: app.auto_count_ampi()
+                    on_text: app.count_ampi()
                 SubMenuTitle:
                     text: "Суточная доза (мг/кг/сут)"
                 MDTextField:
                     id: dose
                     mode: "filled"
                     input_filter: 'float'
-                    on_text: app.auto_count_ampi()
+                    on_text: app.count_ampi()
                 SubMenuTitle:
                     text: "Кратность введения"
                 MDTextField:
                     id: crat
                     mode: "filled"
                     input_filter: 'int'
-                    on_text: app.auto_count_ampi()
+                    on_text: app.count_ampi()
                 SubMenuTitle:
                     text: "Разовая доза в мг"
                 MDTextField:
@@ -527,7 +500,7 @@ MDScreen:
                     MDCheckbox:
                         id: flacone1
                         group: "flacone"
-                        on_press: if flacone1.active == False: flacone1.active = True
+                        on_press: app.count_ampi() ; flacone1.active = True   
                         active: True
                     MDLabel:
                         text: "500 мг/фл"
@@ -536,7 +509,7 @@ MDScreen:
                     MDCheckbox:
                         id: flacone2
                         group: "flacone"
-                        on_press: if flacone2.active == False: flacone2.active = True                        
+                        on_press: app.count_ampi() ; flacone2.active = True                           
                     MDLabel:
                         text: "1000 мг/фл"
                         adaptive_height: True
@@ -544,7 +517,7 @@ MDScreen:
                     MDCheckbox:
                         id: flacone3
                         group: "flacone"
-                        on_press: if flacone3.active == False: flacone3.active = True                        
+                        on_press: app.count_ampi() ; flacone3.active = True                        
                     MDLabel:
                         text: "2000 мг/фл"
                         adaptive_height: True
@@ -555,6 +528,7 @@ MDScreen:
                     id: volume
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_ampi()
                 SubMenuTitle:
                     text: "Разовая доза в мл"
                 MDTextField:
@@ -562,15 +536,7 @@ MDScreen:
                     mode: "outlined"
                     readonly: True
 
-        MDNavigationBar:
-            MDNavigationItem:
-                on_release: app.count_ampi()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+        BottomMenu:
 
 <ScreenGenta@MDScreen>:
     name: "genta"
@@ -590,18 +556,21 @@ MDScreen:
                     id: mass
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_genta()
                 SubMenuTitle:
                     text: "Суточная доза (мг/кг/сут)"
                 MDTextField:
                     id: dose
                     mode: "filled"
                     input_filter: 'float'
+                    on_text: app.count_genta()
                 SubMenuTitle:
                     text: "Кратность введения"
                 MDTextField:
                     id: crat
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_genta()
                 SubMenuTitle:
                     text: "Результат"
                 MDTextField:
@@ -613,15 +582,7 @@ MDScreen:
                     mode: "outlined"
                     readonly: True
 
-        MDNavigationBar:
-            MDNavigationItem:
-                on_release: app.count_genta()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+        BottomMenu:
 
 <ScreenNeutroIndex@MDScreen>:
     name: "neutroindex"
@@ -641,24 +602,28 @@ MDScreen:
                     id: percent1
                     mode: "filled"
                     input_filter: 'float'
+                    on_text: app.count_neutroindex()
                 SubMenuTitle:
                     text: "Юные нейтрофилы (%)"
                 MDTextField:
                     id: percent2
                     mode: "filled"
                     input_filter: 'float'
+                    on_text: app.count_neutroindex()
                 SubMenuTitle:
                     text: "Палочкоядерные нейтрофилы (%)"
                 MDTextField:
                     id: percent3
                     mode: "filled"
                     input_filter: 'float'
+                    on_text: app.count_neutroindex()
                 SubMenuTitle:
                     text: "Сегментоядерные нейтрофилы (%)"
                 MDTextField:
                     id: percent4
                     mode: "filled"
                     input_filter: 'float'
+                    on_text: app.count_neutroindex()
                 SubMenuTitle:
                     text: "Результат"
                 MDTextField:
@@ -666,15 +631,7 @@ MDScreen:
                     mode: "outlined"
                     readonly: True
 
-        MDNavigationBar:
-            MDNavigationItem:
-                on_release: app.count_neutroindex()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+        BottomMenu:
 
 <ScreenEntFunc@MDScreen>:
     name: "entfunc"
@@ -694,12 +651,14 @@ MDScreen:
                     id: mass
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_entfunc()
                 SubMenuTitle:
                     text: "День жизни"
                 MDTextField:
                     id: day
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_entfunc()
                 SubMenuTitle:
                     text: "Количество молока на одно кормление:"
                 MDTextField:
@@ -707,15 +666,7 @@ MDScreen:
                     mode: "outlined"
                     readonly: True
 
-        MDNavigationBar:
-            MDNavigationItem:
-                on_release: app.count_entfunc()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+        BottomMenu:
 
 <ScreenEntZayaz@MDScreen>:
     name: "entzayaz"
@@ -735,14 +686,14 @@ MDScreen:
                     id: mass
                     mode: "filled"
                     input_filter: 'int'
-                    on_text: app.auto_count_entzayaz()
+                    on_text: app.count_entzayaz()
                 SubMenuTitle:
                     text: "День жизни"
                 MDTextField:
                     id: day
                     mode: "filled"
                     input_filter: 'int'
-                    on_text: app.auto_count_entzayaz()
+                    on_text: app.count_entzayaz()
                 SubMenuTitle:
                     text: "Суточное количество молока:"
                 MDTextField:
@@ -755,6 +706,7 @@ MDScreen:
                     id: crat
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_entzayaz()
                 SubMenuTitle:
                     text: "Количество молока на одно кормление:"
                 MDTextField:
@@ -762,15 +714,7 @@ MDScreen:
                     mode: "outlined"
                     readonly: True
 
-        MDNavigationBar:
-            MDNavigationItem:
-                on_release: app.count_entzayaz()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+        BottomMenu:
 
 <ScreenEntEnergy@MDScreen>:
     name: "entenergy"
@@ -790,19 +734,19 @@ MDScreen:
                     id: mass
                     mode: "filled"
                     input_filter: 'int'
-                    on_text: app.auto_count_entenergy()
+                    on_text: app.count_entenergy()
                 SubMenuTitle:
                     text: "День жизни"
                 MDTextField:
                     id: day
                     mode: "filled"
                     input_filter: 'int'
-                    on_text: app.auto_count_entenergy()
+                    on_text: app.count_entenergy()
                 SubMenuTitle:
                     text: "Потребность в энергии (ккал/кг/сут)"
                 MDTextField:
                     id: energy
-                    mode: "filled"
+                    mode: "outlined"
                     readonly: True
                 SubMenuTitle:
                     text: "Суточное количество молока:"
@@ -816,6 +760,7 @@ MDScreen:
                     id: crat
                     mode: "filled"
                     input_filter: 'int'
+                    on_text: app.count_entenergy()
                 SubMenuTitle:
                     text: "Количество молока на одно кормление:"
                 MDTextField:
@@ -823,15 +768,7 @@ MDScreen:
                     mode: "outlined"
                     readonly: True
 
-        MDNavigationBar:
-            MDNavigationItem:
-                on_release: app.count_entenergy()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+        BottomMenu:
 
 <ScreenParent@MDScreen>:
     name: "parent"
@@ -879,8 +816,7 @@ MDScreen:
                     MDCheckbox:
                         id: food1
                         group: "food"
-                        on_press: if food1.active == False: food1.active = True
-                        on_press: app.count_parent() 
+                        on_press: app.count_parent() ; food1.active = True    
                         active: True
                     MDLabel:
                         text: "Грудное молоко"
@@ -889,8 +825,7 @@ MDScreen:
                     MDCheckbox:
                         id: food2
                         group: "food"
-                        on_press: if food2.active == False: food2.active = True
-                        on_press: app.count_parent() 
+                        on_press: app.count_parent() ; food2.active = True    
                     MDLabel:
                         text: "Смесь для доношенных"
                         adaptive_height: True
@@ -898,8 +833,7 @@ MDScreen:
                     MDCheckbox:
                         id: food3
                         group: "food"
-                        on_press: if food3.active == False: food3.active = True 
-                        on_press: app.count_parent()                       
+                        on_press: app.count_parent() ; food3.active = True    
                     MDLabel:
                         text: "Смесь для недоношенных"
                         adaptive_height: True
@@ -976,17 +910,205 @@ MDScreen:
                     mode: "filled"
                     input_filter: 'float'
                     on_text: app.count_parent()
-                 
+                SubMenuTitle:
+                    text: "Суточная доза белка вводимая парентерально (г/сут)"
+                MDTextField:
+                    id: daydosebelki
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Объём 10% раствора аминокислот (мл/сут)"
+                MDTextField:
+                    id: amino
+                    mode: "outlined"
+                    readonly: True
 
-        MDNavigationBar:
-            MDNavigationItem:
-                #on_release: app.count_entenergy()
-                active: False
-                CountBar:
-            MDNavigationItem:
-                on_release: app.clear_calculator()
-                active: False
-                ClearBar:
+                Title:
+                    text: "Расчёт суточного объема жировой эмульсии"
+                SubMenuTitle:
+                    text: "Расчетная доза (г/кг/сут)"
+                MDTextField:
+                    id: dosezhiry
+                    mode: "filled"
+                    input_filter: 'float'
+                    on_text: app.count_parent()
+                SubMenuTitle:
+                    text: "Суточная доза жира вводимая парентерально (г/сут)"
+                MDTextField:
+                    id: daydosezhiry
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Объём 20% эмульсии жиров (мл/сут)"
+                MDTextField:
+                    id: amulszhiry
+                    mode: "outlined"
+                    readonly: True
+                 
+                Title:
+                    text: "Расчёт необходимого объема электролитов"
+                SubMenuTitle:
+                    text: "Расчетная доза натрия (ммоль/кг)"
+                MDTextField:
+                    id: na_need
+                    mode: "filled"
+                    input_filter: 'float'
+                    on_text: app.count_parent()
+                SubMenuTitle:
+                    text: "Объём раствора натрия хлорида 0.9% (мл/сут)"
+                MDTextField:
+                    id: na_dose
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Расчетная доза калия (ммоль/кг)"
+                MDTextField:
+                    id: k_need
+                    mode: "filled"
+                    input_filter: 'float'
+                    on_text: app.count_parent()
+                SubMenuTitle:
+                    text: "Объём раствора калия хлорида 4% (мл/сут)"
+                MDTextField:
+                    id: k_dose
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Расчетная доза кальция (ммоль/кг)"
+                MDTextField:
+                    id: ca_need
+                    mode: "filled"
+                    input_filter: 'float'
+                    on_text: app.count_parent()
+                SubMenuTitle:
+                    text: "Объём раствора кальция глюконата 10% (мл/сут)"
+                MDTextField:
+                    id: ca_dose
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Расчетная доза магния (мг/кг)"
+                MDTextField:
+                    id: mg_need
+                    mode: "filled"
+                    input_filter: 'float'
+                    on_text: app.count_parent()
+                SubMenuTitle:
+                    text: "Объём раствора магния сульфата 25% (мл/сут)"
+                MDTextField:
+                    id: mg_dose
+                    mode: "outlined"
+                    readonly: True
+
+                Title:
+                    text: "Расчёт дозы углеводов (глюкозы)"
+                SubMenuTitle:
+                    text: "Расчетная доза углеводов (мг/кг/мин)"
+                MDTextField:
+                    id: ugleneed
+                    mode: "filled"
+                    input_filter: 'float'
+                    on_text: app.count_parent()
+                SubMenuTitle:
+                    text: "Суточная доза глюкозы (г/сут)"
+                MDTextField:
+                    id: daydoseugle
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Объём раствора углеводов (мл/сут)"
+                MDTextField:
+                    id: doseugle
+                    mode: "outlined"
+                    readonly: True
+
+                SubMenuTitle:
+                    text: "Выбор концентраций:"
+                MDGridLayout:
+                    cols: 2
+                    adaptive_height: True
+                    spacing: "6dp"
+                    MDCheckbox:
+                        id: conc1
+                        group: "conc"
+                        on_press: app.count_parent() ; conc1.active = True  
+                        active: True
+                    MDLabel:
+                        text: "5% и 10%"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                    MDCheckbox:
+                        id: conc2
+                        group: "conc"
+                        on_press: app.count_parent() ; conc2.active = True  
+                    MDLabel:
+                        text: "5% и 40%"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                    MDCheckbox:
+                        id: conc3
+                        group: "conc"
+                        on_press: app.count_parent() ; conc3.active = True                       
+                    MDLabel:
+                        text: "10% и 40%"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+
+                SubMenuTitle:
+                    id: gluk_text1
+                    text: "Объём раствора глюкозы 5% (мл/сут)"
+                MDTextField:
+                    id: gluk1
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    id: gluk_text2
+                    text: "Объём раствора глюкозы 10% (мл/сут)"
+                MDTextField:
+                    id: gluk2
+                    mode: "outlined"
+                    readonly: True
+
+                Title:
+                    text: "Расчёт скорости инфузии"
+                SubMenuTitle:            
+                    text: "Скорость основной инфузии"
+                MDTextField:
+                    id: speed1
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Скорость инфузии жировой эмульсии"
+                MDTextField:
+                    id: speed2
+                    mode: "outlined"
+                    readonly: True
+
+                Title:
+                    text: "Расчёт концентрации глюкозы в инфузионном растворе"
+                SubMenuTitle:            
+                    text: "Концентрация глюкозы в инфузионном растворе"
+                MDTextField:
+                    id: concgluk
+                    mode: "outlined"
+                    readonly: True
+
+                Title:
+                    text: "Расчёт калорийности питания"
+                SubMenuTitle:            
+                    text: "Калорийность парентерального питания"
+                MDTextField:
+                    id: kkalparent
+                    mode: "outlined"
+                    readonly: True
+                SubMenuTitle:
+                    text: "Общая калорийность"
+                MDTextField:
+                    id: kkalsum
+                    mode: "outlined"
+                    readonly: True
+
+        BottomMenu:
 
 <ScreenSilverman@MDScreen>:
     name: "silverman"
