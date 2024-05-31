@@ -52,11 +52,31 @@ MDScreen:
                         MDButton:
                             on_release: menu_manager.current = "massloss"
                             MDButtonText:
-                                text: "Расчёт убыли массы тела"                               
+                                text: "Расчёт убыли массы тела"    
+                        MDButton:
+                            on_release: menu_manager.current = "entfunc"
+                            MDButtonText:
+                                text: "Расчёт энтерального питания\nпо функциональной вместимости желудка"
+                        MDButton:
+                            on_release: menu_manager.current = "entzayaz"
+                            MDButtonText:
+                                text: "Расчёт энтерального питания\nпо формуле Г.И. Зайцевой"
+                        MDButton:
+                            on_release: menu_manager.current = "entenergy"
+                            MDButtonText:
+                                text: "Расчёт энтерального питания\nпо энергетическому способу"
+                        MDButton:
+                            on_release: menu_manager.current = "parent"
+                            MDButtonText:
+                                text: "Расчёт парентерального питания"
+                        MDButton:
+                            on_release: menu_manager.current = "neutroindex"
+                            MDButtonText:
+                                text: "Расчёт нейтрофильного индекса"
                         MDButton:
                             on_release: menu_manager.current = "kurosurf"
                             MDButtonText:
-                                text: "Расчёт дозы Куросурфа®"
+                                text: "Расчёт дозы куросурфа"
                         MDButton:
                             on_release: menu_manager.current = "cofe"
                             MDButtonText:
@@ -77,26 +97,6 @@ MDScreen:
                             on_release: menu_manager.current = "genta"
                             MDButtonText:
                                 text: "Расчёт дозы гентамицина"
-                        MDButton:
-                            on_release: menu_manager.current = "neutroindex"
-                            MDButtonText:
-                                text: "Расчёт нейтрофильного индекса"
-                        MDButton:
-                            on_release: menu_manager.current = "entfunc"
-                            MDButtonText:
-                                text: "Расчёт энтерального питания\nпо функциональной вместимости желудка"
-                        MDButton:
-                            on_release: menu_manager.current = "entzayaz"
-                            MDButtonText:
-                                text: "Расчёт энтерального питания\nпо формуле Г.И. Зайцевой"
-                        MDButton:
-                            on_release: menu_manager.current = "entenergy"
-                            MDButtonText:
-                                text: "Расчёт энтерального питания\nпо энергетическому способу"
-                        MDButton:
-                            on_release: menu_manager.current = "parent"
-                            MDButtonText:
-                                text: "Расчёт парентерального питания"
                         Title:
                             text: "Шкалы"
                         MDButton:
@@ -120,17 +120,17 @@ MDScreen:
                     #MDTopAppBarTitle:
                         #text: "Поиск..."
         ScreenMassLoss:
+        ScreenEntFunc:
+        ScreenEntZayaz:
+        ScreenEntEnergy:
+        ScreenParent:
+        ScreenNeutroIndex:
         ScreenKurosurf:
         ScreenCofe:
         ScreenDofamine:
         ScreenMetro:
         ScreenAmpi:
         ScreenGenta:
-        ScreenNeutroIndex:
-        ScreenEntFunc:
-        ScreenEntZayaz:
-        ScreenEntEnergy:
-        ScreenParent:
         ScreenSilverman:
         ScreenDownes:
         ScreenBallard:
@@ -173,12 +173,11 @@ MDScreen:
         font_style: "Title"
         role: "medium"
 
+
 <TileContainer@MDSmartTileOverlayContainer>:
     adaptive_height: True
     padding: 0, "8dp"
     spacing: "8dp"
-<#MDListItemHeadlineText>:
-    #text: "[size=54][/size]"
 <ImageCheckbox@MDCheckbox>:
     pos_hint: {"center_y": .1, "center_x": 0}
 <SmartMenu@MDGridLayout>:
@@ -201,16 +200,6 @@ MDScreen:
     font_style: "Title"
     adaptive_height: True
     padding: "6dp", 0, 0, 0  
-<ResultField@MDTextField>:
-    mode: "outlined"
-    readonly: True
-    MDTextFieldHintText:
-        text: "Результат:"
-<InterField@MDTextField>:
-    mode: "outlined"
-    readonly: True
-    MDTextFieldHintText:
-        text: "Интерпретация:"
 <MDNavigationBar>:
     size_hint_y: .2
     padding: "10dp"
@@ -273,7 +262,7 @@ MDScreen:
         ScrollView:
             ScrollMenu:
                 Header:
-                    text: "Расчёт дозы Куросурфа®\n80 мг/мл (120 мг/фл)"
+                    text: "Расчёт дозы куросурфа\n80мг/мл (120мг/фл)"
                 MDGridLayout:
                     cols: 2
                     adaptive_height: True
@@ -284,7 +273,7 @@ MDScreen:
                         on_press: app.count_kurosurf() ; dose1.active = True
                         active: True
                     MDLabel:
-                        text: "Стартовая доза 200 мг/кг"
+                        text: "Стартовая доза 200мг/кг"
                         adaptive_height: True
                         pos_hint: {"center_y": .5}
                     MDCheckbox:
@@ -292,7 +281,7 @@ MDScreen:
                         group: "dose"
                         on_press: app.count_kurosurf() ; dose2.active = True                        
                     MDLabel:
-                        text: "Доза для повторного введения 100 мг/кг"
+                        text: "Доза для повторного введения 100мг/кг"
                         adaptive_height: True
                         pos_hint: {"center_y": .5}
                 SubMenuTitle:
@@ -527,7 +516,7 @@ MDScreen:
                 MDTextField:
                     id: volume
                     mode: "filled"
-                    input_filter: 'int'
+                    input_filter: 'float'
                     on_text: app.count_ampi()
                 SubMenuTitle:
                     text: "Разовая доза в мл"
@@ -1123,27 +1112,36 @@ MDScreen:
                 Header:
                     text: "Шкала Сильвермана"
                 SubMenuTitle:
-                    text: "Движение грудной клетки"    
+                    text: "Движения грудной клетки" 
                 MDList:
                     MDListItem:
+                        height: silver_text11.height + 33
                         on_release: silverman11.state = "down" if silverman11.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: silver_text11
+                            shorten: False
                             text: "Грудь и живот равномерно участвуют в акте дыхания"
                         MDListItemTrailingCheckbox:
                             id: silverman11
                             on_release: silverman11.state = "down" if silverman11.state == "normal" else "normal"
                             group: 'silver1'
                     MDListItem:
+                        height: silver_text12.height + 33
                         on_release: silverman12.state = "down" if silverman12.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: silver_text12
+                            shorten: False
                             text: "Аритмичное, неравномерное дыхание"
                         MDListItemTrailingCheckbox:
                             id: silverman12
                             on_release: silverman12.state = "down" if silverman12.state == "normal" else "normal"
                             group: 'silver1'
                     MDListItem:
+                        height: silver_text13.height + 33
                         on_release: silverman13.state = "down" if silverman13.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: silver_text13
+                            shorten: False
                             text: "Парадоксальное дыхание"
                         MDListItemTrailingCheckbox:
                             id: silverman13
@@ -1154,24 +1152,33 @@ MDScreen:
                     text: "Втяжение межреберий"       
                 MDList:
                     MDListItem:
+                        height: silver_text21.height + 33
                         on_release: silverman21.state = "down" if silverman21.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Нет"
+                            id: silver_text21
+                            shorten: False
+                            text: "Отсутствует"
                         MDListItemTrailingCheckbox:
                             id: silverman21
                             on_release: silverman21.state = "down" if silverman21.state == "normal" else "normal"
                             group: 'silver2'
                     MDListItem:
+                        height: silver_text22.height + 33
                         on_release: silverman22.state = "down" if silverman22.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Не резко выражено"
+                            id: silver_text22
+                            shorten: False
+                            text: "Нерезко выражено"
                         MDListItemTrailingCheckbox:
                             id: silverman22
                             on_release: silverman22.state = "down" if silverman22.state == "normal" else "normal"
                             group: 'silver2'
                     MDListItem:
+                        height: silver_text23.height + 33
                         on_release: silverman23.state = "down" if silverman23.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: silver_text23
+                            shorten: False
                             text: "Резко выражено"
                         MDListItemTrailingCheckbox:
                             id: silverman23
@@ -1182,25 +1189,34 @@ MDScreen:
                     text: "Втяжение грудины"                
                 MDList:
                     MDListItem:
+                        height: silver_text31.height + 33
                         on_release: silverman31.state = "down" if silverman31.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Нет"
+                            id: silver_text31
+                            shorten: False
+                            text: "Отсутствует"
                         MDListItemTrailingCheckbox:
                             id: silverman31
                             on_release: silverman31.state = "down" if silverman31.state == "normal" else "normal"
                             group: 'silver3'
                     MDListItem:
+                        height: silver_text32.height + 33
                         on_release: silverman32.state = "down" if silverman32.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Не резко выражено"
+                            id: silver_text32
+                            shorten: False
+                            text: "Нерезко выражено"
                         MDListItemTrailingCheckbox:
                             id: silverman32
                             on_release: silverman32.state = "down" if silverman32.state == "normal" else "normal"
                             group: 'silver3'
                     MDListItem:
+                        height: silver_text33.height + 33
                         on_release: silverman33.state = "down" if silverman33.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Резко выражено"
+                            id: silver_text33
+                            shorten: False
+                            text: "Резко выражено, держится постоянно"
                         MDListItemTrailingCheckbox:
                             id: silverman33
                             on_release: silverman33.state = "down" if silverman33.state == "normal" else "normal"
@@ -1210,24 +1226,33 @@ MDScreen:
                     text: "Положение нижней челюсти"               
                 MDList:
                     MDListItem:
+                        height: silver_text41.height + 33
                         on_release: silverman41.state = "down" if silverman41.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Рот закрыт, нижняя челюсть не западает"
+                            id: silver_text41
+                            shorten: False
+                            text: "Рот закрыт, челюсть не западает"
                         MDListItemTrailingCheckbox:
                             id: silverman41
                             on_release: silverman41.state = "down" if silverman41.state == "normal" else "normal"
                             group: 'silver4'
                     MDListItem:
+                        height: silver_text42.height + 33
                         on_release: silverman42.state = "down" if silverman42.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Рот закрыт, нижняя челюсть западает"
+                            id: silver_text42
+                            shorten: False
+                            text: "Рот закрыт, челюсть западает"
                         MDListItemTrailingCheckbox:
                             id: silverman42
                             on_release: silverman42.state = "down" if silverman42.state == "normal" else "normal"
                             group: 'silver4'
                     MDListItem:
+                        height: silver_text43.height + 33
                         on_release: silverman43.state = "down" if silverman43.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: silver_text43
+                            shorten: False
                             text: "Рот открыт, челюсть западает"
                         MDListItemTrailingCheckbox:
                             id: silverman43
@@ -1238,33 +1263,50 @@ MDScreen:
                     text: "Дыхание"               
                 MDList:
                     MDListItem:
+                        height: silver_text51.height + 33
                         on_release: silverman51.state = "down" if silverman51.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: silver_text51
+                            shorten: False
                             text: "Спокойное, ровное"
                         MDListItemTrailingCheckbox:
                             id: silverman51
                             on_release: silverman51.state = "down" if silverman51.state == "normal" else "normal"
                             group: 'silver5'
                     MDListItem:
+                        height: silver_text52.height + 33
                         on_release: silverman52.state = "down" if silverman52.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: silver_text52
+                            shorten: False
                             text: "При аускультации слышен затрудненный выдох"
                         MDListItemTrailingCheckbox:
                             id: silverman52
                             on_release: silverman52.state = "down" if silverman52.state == "normal" else "normal"
                             group: 'silver5'
                     MDListItem:
+                        height: silver_text53.height + 33
                         on_release: silverman53.state = "down" if silverman53.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Стонущее, экспираторные шумы слышны на расстоянии"
+                            id: silver_text53
+                            shorten: False
+                            text: "Стонущее дыхание, экспираторные шумы слышны на расстоянии"
                         MDListItemTrailingCheckbox:
                             id: silverman53
                             on_release: silverman53.state = "down" if silverman53.state == "normal" else "normal"
                             group: 'silver5'
 
-                ResultField:
+                SubMenuTitle:
+                    text: "Результат:"
+                MDTextField:
+                    mode: "outlined"
+                    readonly: True
                     id: result
-                InterField:
+                SubMenuTitle:
+                    text: "Интерпретация:"
+                MDTextField:
+                    mode: "outlined"
+                    readonly: True
                     id: inter
 
         MDNavigationBar:
@@ -1293,25 +1335,34 @@ MDScreen:
                     text: "ЧД (Частота дыхания)"                    
                 MDList:
                     MDListItem:
+                        height: downes_text11.height + 33
                         on_release: downes11.state = "down" if downes11.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "60"
+                            id: downes_text11
+                            shorten: False
+                            text: "Менее 60"
                         MDListItemTrailingCheckbox:
                             id: downes11
                             on_release: downes11.state = "down" if downes11.state == "normal" else "normal"
                             group: 'downes1'
                     MDListItem:
+                        height: downes_text12.height + 33
                         on_release: downes12.state = "down" if downes12.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: downes_text12
+                            shorten: False
                             text: "60-80"
                         MDListItemTrailingCheckbox:
                             id: downes12
                             on_release: downes12.state = "down" if downes12.state == "normal" else "normal"
                             group: 'downes1'
                     MDListItem:
+                        height: downes_text13.height + 33
                         on_release: downes13.state = "down" if downes13.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Более 80"
+                            id: downes_text13
+                            shorten: False
+                            text: "Более 80 или апноэ"
                         MDListItemTrailingCheckbox:
                             id: downes13
                             on_release: downes13.state = "down" if downes13.state == "normal" else "normal"
@@ -1321,117 +1372,161 @@ MDScreen:
                     text: "Цианоз"               
                 MDList:
                     MDListItem:
+                        height: downes_text21.height + 33
                         on_release: downes21.state = "down" if downes21.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Отсутствует"
+                            id: downes_text21
+                            shorten: False
+                            text: "Отсутствует при дыхании комнатным воздухом"
                         MDListItemTrailingCheckbox:
                             id: downes21
                             on_release: downes21.state = "down" if downes21.state == "normal" else "normal"
                             group: 'downes2'
                     MDListItem:
+                        height: downes_text22.height + 33
                         on_release: downes22.state = "down" if downes22.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "При дыхании комнатным воздухом"
+                            id: downes_text22
+                            shorten: False
+                            text: "Есть, исчезает при дотации кислорода до 40%"
                         MDListItemTrailingCheckbox:
                             id: downes22
                             on_release: downes22.state = "down" if downes22.state == "normal" else "normal"
                             group: 'downes2'
                     MDListItem:
+                        height: downes_text23.height + 33
                         on_release: downes23.state = "down" if downes23.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "При дыхании 40% кислородом"
+                            id: downes_text23
+                            shorten: False
+                            text: "Есть, исчезает при дотации кислорода более 40%"
                         MDListItemTrailingCheckbox:
                             id: downes23
                             on_release: downes23.state = "down" if downes23.state == "normal" else "normal"
                             group: 'downes2'
 
                 SubMenuTitle:
-                    text: "Раздувание крыльев носа"               
+                    text: "Втяжение грудной клетки"               
                 MDList:
                     MDListItem:
+                        height: downes_text31.height + 33
                         on_release: downes31.state = "down" if downes31.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: downes_text31
+                            shorten: False
                             text: "Отсутствует"
                         MDListItemTrailingCheckbox:
                             id: downes31
                             on_release: downes31.state = "down" if downes31.state == "normal" else "normal"
                             group: 'downes3'
                     MDListItem:
+                        height: downes_text33.height + 33
                         on_release: downes32.state = "down" if downes32.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Еле заметное"
+                            id: downes_text32
+                            shorten: False
+                            text: "Умеренное"
                         MDListItemTrailingCheckbox:
                             id: downes32
                             on_release: downes32.state = "down" if downes32.state == "normal" else "normal"
                             group: 'downes3'
                     MDListItem:
+                        height: downes_text33.height + 33
                         on_release: downes33.state = "down" if downes33.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Умеренное или выраженное"
+                            id: downes_text33
+                            shorten: False
+                            text: "Значительное"
                         MDListItemTrailingCheckbox:
                             id: downes33
                             on_release: downes33.state = "down" if downes33.state == "normal" else "normal"
                             group: 'downes3'
 
                 SubMenuTitle:
-                    text: "Затрудненный выдох"           
+                    text: "Затрудненный выдох (стон)"           
                 MDList:
                     MDListItem:
+                        height: downes_text41.height + 33
                         on_release: downes41.state = "down" if downes41.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: downes_text41
+                            shorten: False
                             text: "Отсутствует"
                         MDListItemTrailingCheckbox:
                             id: downes41
                             on_release: downes41.state = "down" if downes41.state == "normal" else "normal"
                             group: 'downes4'
                     MDListItem:
+                        height: downes_text42.height + 33
                         on_release: downes42.state = "down" if downes42.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Слышен при аускультации"
+                            id: downes_text42
+                            shorten: False
+                            text: "Выслушивается стетоскопом"
                         MDListItemTrailingCheckbox:
                             id: downes42
                             on_release: downes42.state = "down" if downes42.state == "normal" else "normal"
                             group: 'downes4'
                     MDListItem:
+                        height: downes_text43.height + 33
                         on_release: downes43.state = "down" if downes43.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Слышен без стетоскопа"
+                            id: downes_text43
+                            shorten: False
+                            text: "Слышно на расстоянии"
                         MDListItemTrailingCheckbox:
                             id: downes43
                             on_release: downes43.state = "down" if downes43.state == "normal" else "normal"
                             group: 'downes4'
 
                 SubMenuTitle:
-                    text: "Аускультация"               
+                    text: "Характер дыхания при аускультации"               
                 MDList:
                     MDListItem:
+                        height: downes_text51.height + 33
                         on_release: downes51.state = "down" if downes51.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Дыхание прослушивается хорошо"
+                            id: downes_text51
+                            shorten: False
+                            text: "Пуэрильное"
                         MDListItemTrailingCheckbox:
                             id: downes51
                             on_release: downes51.state = "down" if downes51.state == "normal" else "normal"
                             group: 'downes5'
                     MDListItem:
+                        height: downes_text52.height + 33
                         on_release: downes52.state = "down" if downes52.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Дыхание ослабленное"
+                            id: downes_text52
+                            shorten: False
+                            text: "Изменено или ослаблено"
                         MDListItemTrailingCheckbox:
                             id: downes52
                             on_release: downes52.state = "down" if downes52.state == "normal" else "normal"
                             group: 'downes5'
                     MDListItem:
+                        height: downes_text53.height + 33
                         on_release: downes53.state = "down" if downes53.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            text: "Дыхание едва слышно"
+                            id: downes_text53
+                            shorten: False
+                            text: "Плохо проводится"
                         MDListItemTrailingCheckbox:
                             id: downes53
                             on_release: downes53.state = "down" if downes53.state == "normal" else "normal"
                             group: 'downes5'
 
-                ResultField:
+                SubMenuTitle:
+                    text: "Результат:"
+                MDTextField:
+                    mode: "outlined"
+                    readonly: True
                     id: result
-                InterField:
+                SubMenuTitle:
+                    text: "Интерпретация:"
+                MDTextField:
+                    mode: "outlined"
+                    readonly: True
                     id: inter
 
         MDNavigationBar:
@@ -1811,56 +1906,77 @@ MDScreen:
                     text: "Кожа"               
                 MDList:
                     MDListItem:
+                        height: ballard_text11.height + 33
                         on_release: ballard11.state = "down" if ballard11.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text11
+                            shorten: False
                             text: "Липкая, рыхлая, прозрачная"
                         MDListItemTrailingCheckbox:
                             id: ballard11
                             on_release: ballard11.state = "down" if ballard11.state == "normal" else "normal"
                             group: 'ballard1'
                     MDListItem:
+                        height: ballard_text12.height + 33
                         on_release: ballard12.state = "down" if ballard12.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text12
+                            shorten: False
                             text: "Желатинозная красная, прозрачная"
                         MDListItemTrailingCheckbox:
                             id: ballard12
                             on_release: ballard12.state = "down" if ballard12.state == "normal" else "normal"
                             group: 'ballard1'
                     MDListItem:
+                        height: ballard_text13.height + 33
                         on_release: ballard13.state = "down" if ballard13.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text13
+                            shorten: False
                             text: "Гладкая, розовая, видимые вены"
                         MDListItemTrailingCheckbox:
                             id: ballard13
                             on_release: ballard13.state = "down" if ballard13.state == "normal" else "normal"
                             group: 'ballard1'
                     MDListItem:
+                        height: ballard_text14.height + 33
                         on_release: ballard14.state = "down" if ballard14.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text14
+                            shorten: False
                             text: "Поверхностное шелушение, видно немного вен"
                         MDListItemTrailingCheckbox:
                             id: ballard14
                             on_release: ballard14.state = "down" if ballard14.state == "normal" else "normal"
                             group: 'ballard1'
                     MDListItem:
+                        height: ballard_text15.height + 33
                         on_release: ballard15.state = "down" if ballard15.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text15
+                            shorten: False
                             text: "Поверхностные трещины, редкие вены"
                         MDListItemTrailingCheckbox:
                             id: ballard15
                             on_release: ballard15.state = "down" if ballard15.state == "normal" else "normal"
                             group: 'ballard1'
                     MDListItem:
+                        height: ballard_text16.height + 33
                         on_release: ballard16.state = "down" if ballard16.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text16
+                            shorten: False
                             text: "Пергаментообразная, глубокие трещины, сосуды не видны"
                         MDListItemTrailingCheckbox:
                             id: ballard16
                             on_release: ballard16.state = "down" if ballard16.state == "normal" else "normal"
                             group: 'ballard1'
                     MDListItem:
+                        height: ballard_text17.height + 33
                         on_release: ballard17.state = "down" if ballard17.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text17
+                            shorten: False
                             text: "Зрелая, толстая, морщинистая, складчатая"
                         MDListItemTrailingCheckbox:
                             id: ballard17
@@ -1871,48 +1987,66 @@ MDScreen:
                     text: "Лануго"               
                 MDList:
                     MDListItem:
+                        height: ballard_text21.height + 33
                         on_release: ballard21.state = "down" if ballard21.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text21
+                            shorten: False
                             text: "Нет"
                         MDListItemTrailingCheckbox:
                             id: ballard21
                             on_release: ballard21.state = "down" if ballard21.state == "normal" else "normal"
                             group: 'ballard2'
                     MDListItem:
+                        height: ballard_text22.height + 33
                         on_release: ballard22.state = "down" if ballard22.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text22
+                            shorten: False
                             text: "Редкое"
                         MDListItemTrailingCheckbox:
                             id: ballard22
                             on_release: ballard22.state = "down" if ballard22.state == "normal" else "normal"
                             group: 'ballard2'
                     MDListItem:
+                        height: ballard_text23.height + 33
                         on_release: ballard23.state = "down" if ballard23.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text23
+                            shorten: False
                             text: "Обильное"
                         MDListItemTrailingCheckbox:
                             id: ballard23
                             on_release: ballard23.state = "down" if ballard23.state == "normal" else "normal"
                             group: 'ballard2'
                     MDListItem:
+                        height: ballard_text24.height + 33
                         on_release: ballard24.state = "down" if ballard24.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text24
+                            shorten: False
                             text: "Необильное"
                         MDListItemTrailingCheckbox:
                             id: ballard24
                             on_release: ballard24.state = "down" if ballard24.state == "normal" else "normal"
                             group: 'ballard2'
                     MDListItem:
+                        height: ballard_text25.height + 33
                         on_release: ballard25.state = "down" if ballard25.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text25
+                            shorten: False
                             text: "Мало, есть области без лануго"
                         MDListItemTrailingCheckbox:
                             id: ballard25
                             on_release: ballard25.state = "down" if ballard25.state == "normal" else "normal"
                             group: 'ballard2'
                     MDListItem:
+                        height: ballard_text26.height + 33
                         on_release: ballard26.state = "down" if ballard26.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text26
+                            shorten: False
                             text: "Редкое, в основном кожа без лануго"
                         MDListItemTrailingCheckbox:
                             id: ballard26
@@ -1923,56 +2057,77 @@ MDScreen:
                     text: "Поверхность подошвы"               
                 MDList:
                     MDListItem:
+                        height: ballard_text31.height + 33
                         on_release: ballard31.state = "down" if ballard31.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text31
+                            shorten: False
                             text: "Длина стопы < 40мм"
                         MDListItemTrailingCheckbox:
                             id: ballard31
                             on_release: ballard31.state = "down" if ballard31.state == "normal" else "normal"
                             group: 'ballard3'
                     MDListItem:
+                        height: ballard_text32.height + 33
                         on_release: ballard32.state = "down" if ballard32.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text32
+                            shorten: False
                             text: "Длина стопы 40-50мм"
                         MDListItemTrailingCheckbox:
                             id: ballard32
                             on_release: ballard32.state = "down" if ballard32.state == "normal" else "normal"
                             group: 'ballard3'
                     MDListItem:
+                        height: ballard_text33.height + 33
                         on_release: ballard33.state = "down" if ballard33.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text33
+                            shorten: False
                             text: ">50мм, нет складок"
                         MDListItemTrailingCheckbox:
                             id: ballard33
                             on_release: ballard33.state = "down" if ballard33.state == "normal" else "normal"
                             group: 'ballard3'
                     MDListItem:
+                        height: ballard_text34.height + 33
                         on_release: ballard34.state = "down" if ballard34.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text34
+                            shorten: False
                             text: "Нечёткие красные полосы"
                         MDListItemTrailingCheckbox:
                             id: ballard34
                             on_release: ballard34.state = "down" if ballard34.state == "normal" else "normal"
                             group: 'ballard3'
                     MDListItem:
+                        height: ballard_text35.height + 33
                         on_release: ballard35.state = "down" if ballard35.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text35
+                            shorten: False
                             text: "Заметна только передняя поперечная борозда"
                         MDListItemTrailingCheckbox:
                             id: ballard35
                             on_release: ballard35.state = "down" if ballard35.state == "normal" else "normal"
                             group: 'ballard3'
                     MDListItem:
+                        height: ballard_text36.height + 33
                         on_release: ballard36.state = "down" if ballard36.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text36
+                            shorten: False
                             text: "Борозды покрывают передние 2/3 стопы"
                         MDListItemTrailingCheckbox:
                             id: ballard36
                             on_release: ballard36.state = "down" if ballard36.state == "normal" else "normal"
                             group: 'ballard3'
                     MDListItem:
+                        height: ballard_text37.height + 33
                         on_release: ballard37.state = "down" if ballard37.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text37
+                            shorten: False
                             text: "Борозды покрывают всю стопу"
                         MDListItemTrailingCheckbox:
                             id: ballard37
@@ -1983,48 +2138,66 @@ MDScreen:
                     text: "Грудные железы"               
                 MDList:
                     MDListItem:
+                        height: ballard_text41.height + 33
                         on_release: ballard41.state = "down" if ballard41.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text41
+                            shorten: False
                             text: "Не определяются"
                         MDListItemTrailingCheckbox:
                             id: ballard41
                             on_release: ballard41.state = "down" if ballard41.state == "normal" else "normal"
                             group: 'ballard4'
                     MDListItem:
+                        height: ballard_text42.height + 33
                         on_release: ballard42.state = "down" if ballard42.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text42
+                            shorten: False
                             text: "Едва определяются"
                         MDListItemTrailingCheckbox:
                             id: ballard42
                             on_release: ballard42.state = "down" if ballard42.state == "normal" else "normal"
                             group: 'ballard4'
                     MDListItem:
+                        height: ballard_text43.height + 33
                         on_release: ballard43.state = "down" if ballard43.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text43
+                            shorten: False
                             text: "Сосок не выражен, ареола плоская"
                         MDListItemTrailingCheckbox:
                             id: ballard43
                             on_release: ballard43.state = "down" if ballard43.state == "normal" else "normal"
                             group: 'ballard4'
                     MDListItem:
+                        height: ballard_text44.height + 33
                         on_release: ballard44.state = "down" if ballard44.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text44
+                            shorten: False
                             text: "Ареола чётко очерчена, диаметр железы 1-2мм"
                         MDListItemTrailingCheckbox:
                             id: ballard44
                             on_release: ballard44.state = "down" if ballard44.state == "normal" else "normal"
                             group: 'ballard4'
                     MDListItem:
+                        height: ballard_text45.height + 33
                         on_release: ballard45.state = "down" if ballard45.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text45
+                            shorten: False
                             text: "Ареола возвышается, диаметр железы 3-4 мм"
                         MDListItemTrailingCheckbox:
                             id: ballard45
                             on_release: ballard45.state = "down" if ballard45.state == "normal" else "normal"
                             group: 'ballard4'
                     MDListItem:
+                        height: ballard_text46.height + 33
                         on_release: ballard46.state = "down" if ballard46.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text46
+                            shorten: False
                             text: "Ареола полностью сформирована, диаметр железы 5-10мм"
                         MDListItemTrailingCheckbox:
                             id: ballard46
@@ -2035,56 +2208,77 @@ MDScreen:
                     text: "Глаз/ухо"               
                 MDList:
                     MDListItem:
+                        height: ballard_text51.height + 33
                         on_release: ballard51.state = "down" if ballard51.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text51
+                            shorten: False
                             text: "Веки сомкнуты плотно"
                         MDListItemTrailingCheckbox:
                             id: ballard51
                             on_release: ballard51.state = "down" if ballard51.state == "normal" else "normal"
                             group: 'ballard5'
                     MDListItem:
+                        height: ballard_text52.height + 33
                         on_release: ballard52.state = "down" if ballard52.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text52
+                            shorten: False
                             text: "Веки сомкнуты неплотно"
                         MDListItemTrailingCheckbox:
                             id: ballard52
                             on_release: ballard52.state = "down" if ballard52.state == "normal" else "normal"
                             group: 'ballard5'
                     MDListItem:
+                        height: ballard_text53.height + 33
                         on_release: ballard53.state = "down" if ballard53.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text53
+                            shorten: False
                             text: "Глазки открываются, ушная раковина плоская, при сгибании остаётся нерасправленной"
                         MDListItemTrailingCheckbox:
                             id: ballard53
                             on_release: ballard53.state = "down" if ballard53.state == "normal" else "normal"
                             group: 'ballard5'
                     MDListItem:
+                        height: ballard_text54.height + 33
                         on_release: ballard54.state = "down" if ballard54.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text54
+                            shorten: False
                             text: "Часть ушной раковины загнута внутрь; ушная раковина мягкая, при сгибании расправляется медленно"
                         MDListItemTrailingCheckbox:
                             id: ballard54
                             on_release: ballard54.state = "down" if ballard54.state == "normal" else "normal"
                             group: 'ballard5'
                     MDListItem:
+                        height: ballard_text55.height + 33
                         on_release: ballard55.state = "down" if ballard55.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text55
+                            shorten: False
                             text: "Вся верхняя часть ушной раковины загнута внутрь; ушная раковина мягкая, при сгибании легко расправляется"
                         MDListItemTrailingCheckbox:
                             id: ballard55
                             on_release: ballard55.state = "down" if ballard55.state == "normal" else "normal"
                             group: 'ballard5'
                     MDListItem:
+                        height: ballard_text56.height + 33
                         on_release: ballard56.state = "down" if ballard56.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text56
+                            shorten: False
                             text: "Вся верхняя часть ушной раковины загнута внутрь; твёрдая, сразу же расправляется после сгибания"
                         MDListItemTrailingCheckbox:
                             id: ballard56
                             on_release: ballard56.state = "down" if ballard56.state == "normal" else "normal"
                             group: 'ballard5'
                     MDListItem:
+                        height: ballard_text57.height + 33
                         on_release: ballard57.state = "down" if ballard57.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            id: ballard_text57
+                            shorten: False
                             text: "Плотный хрящ; негибкая ушная раковина"
                         MDListItemTrailingCheckbox:
                             id: ballard57
@@ -2118,79 +2312,95 @@ MDScreen:
                         pos_hint: {"center_y": .5}
                 MDList:
                     MDListItem:
+                        height: ballard_text61.height + 33
                         on_release: ballard61.state = "down" if ballard61.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            id: ballardtext61 
+                            shorten: False
+                            id: ballard_text61 
                             text: "Мошонка, пустая, гладкая"
                         MDListItemTrailingCheckbox:
                             id: ballard61
                             on_release: ballard61.state = "down" if ballard61.state == "normal" else "normal"
                             group: 'ballard6'
                     MDListItem:
+                        height: ballard_text62.height + 33
                         on_release: ballard62.state = "down" if ballard62.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            id: ballardtext62 
+                            shorten: False
+                            id: ballard_text62 
                             text: "Мошонка, пустая, незначительные складки"
                         MDListItemTrailingCheckbox:
                             id: ballard62
                             on_release: ballard62.state = "down" if ballard62.state == "normal" else "normal"
                             group: 'ballard6'
                     MDListItem:
+                        height: ballard_text63.height + 33
                         on_release: ballard63.state = "down" if ballard63.state == "normal" else "normal"
                         MDListItemHeadlineText:
+                            shorten: False
                             text: "Яички расположены над входом в мошонку, редкие складки"
-                            id: ballardtext63 
+                            id: ballard_text63 
                         MDListItemTrailingCheckbox:
                             id: ballard63
                             on_release: ballard63.state = "down" if ballard63.state == "normal" else "normal"
                             group: 'ballard6'
                     MDListItem:
+                        height: ballard_text64.height + 33
                         on_release: ballard64.state = "down" if ballard64.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            id: ballardtext64 
+                            shorten: False
+                            id: ballard_text64 
                             text: "Яички опускаются в мошонку (процесс не завершён), несколько складок"
                         MDListItemTrailingCheckbox:
                             id: ballard64
                             on_release: ballard64.state = "down" if ballard64.state == "normal" else "normal"
                             group: 'ballard6'
                     MDListItem:
+                        height: ballard_text65.height + 33
                         on_release: ballard65.state = "down" if ballard65.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            id: ballardtext65 
+                            shorten: False
+                            id: ballard_text65 
                             text: "Яички опущены в мошонку, складки хорошо выражены"
                         MDListItemTrailingCheckbox:
                             id: ballard65
                             on_release: ballard65.state = "down" if ballard65.state == "normal" else "normal"
                             group: 'ballard6'
                     MDListItem:
+                        height: ballard_text66.height + 33
                         on_release: ballard66.state = "down" if ballard66.state == "normal" else "normal"
                         MDListItemHeadlineText:
-                            id: ballardtext66 
+                            shorten: False
+                            id: ballard_text66 
                             text: "Яички свободно подвешены в мошонке, хорошо выражены глубокие складки"
                         MDListItemTrailingCheckbox:
                             id: ballard66
                             on_release: ballard66.state = "down" if ballard66.state == "normal" else "normal"
                             group: 'ballard6'
 
+                SubMenuTitle:
+                    text: "Оценка нейромышленной зрелости:" 
                 MDTextField:
                     id: result1
                     mode: "outlined"
                     readonly: True
-                    MDTextFieldHintText:
-                        text: "Оценка нейромышленной зрелости:"   
+                SubMenuTitle:
+                    text: "Оценка физической зрелости:"
                 MDTextField:
                     id: result2
                     mode: "outlined"
                     readonly: True
-                    MDTextFieldHintText:
-                        text: "Оценка физической зрелости:"
+                SubMenuTitle:
+                    text: "Общая оценка зрелости:"
                 MDTextField:
                     id: resultfinal
                     mode: "outlined"
                     readonly: True
-                    MDTextFieldHintText:
-                        text: "Общая оценка зрелости:"          
-                InterField:
+                SubMenuTitle:
+                    text: "Интерпретация:"
+                MDTextField:
+                    mode: "outlined"
+                    readonly: True
                     id: inter
 
         MDNavigationBar:
