@@ -1,7 +1,12 @@
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivymd.app import MDApp
 from kivymd.uix.selectioncontrol.selectioncontrol import MDCheckbox
+from kivymd.uix.textfield.textfield import MDTextField
 import math
+from docxtpl import DocxTemplate
+from datetime import datetime
+from kivy import platform
+from kivy.setupconfig import USE_SDL2
 
 
 class MyCalculatorApp(MDApp):
@@ -248,23 +253,27 @@ class MyCalculatorApp(MDApp):
             dayneed = round(physneed * mass, 1)
             items.dayneed.text = f"{dayneed} мл/сут"
         else:
+            mass = 0
             items.dayneed.text = ""
-        if items.volumeonetime.text != "" and items.count.text != "" and items.dayneed.text != "":
-            if items.food1.active:
-                x1 = 1
-                x2 = 2
-                x3 = 3
-                x4 = 4
-            elif items.food2.active:
-                x1 = 7.78
-                x2 = 1.27
-                x3 = 3.42
-                x4 = 67
-            elif items.food3.active:
-                x1 = 8.4
-                x2 = 2.6
-                x3 = 3.9
-                x4 = 79
+        if items.food1.active:
+            food = "Грудное молоко"
+            x1 = 1
+            x2 = 2
+            x3 = 3
+            x4 = 4
+        elif items.food2.active:
+            food = "Смесь для доношенных"
+            x1 = 7.78
+            x2 = 1.27
+            x3 = 3.42
+            x4 = 67
+        elif items.food3.active:
+            food = "Смесь для недоношенных"
+            x1 = 8.4
+            x2 = 2.6
+            x3 = 3.9
+            x4 = 79
+        if items.volumeonetime.text != "" and items.count.text != "" and items.dayneed.text != "" and items.mass.text != "":
             volumeonetime = float(items.volumeonetime.text)
             count = int(items.count.text)
             volumephys = round((volumeonetime * count)/mass, 1)
@@ -291,10 +300,10 @@ class MyCalculatorApp(MDApp):
                         belki = round(volumeent*x2/100, 2)
                         zhiry = round(volumeent*x3/100, 2)
                         kkal = round(volumeent*x4/100, 2)
-                        items.ugle.text = f"{ugle} г"
-                        items.belki.text = f"{belki} г/кг/сут"
-                        items.zhiry.text = f"{zhiry} г/кг/сут"
-                        items.kkal.text = f"{kkal} ккал"
+                        items.ugle.text = f"{ugle} г/сут"
+                        items.belki.text = f"{belki} г/сут"
+                        items.zhiry.text = f"{zhiry} г/сут"
+                        items.kkal.text = f"{kkal} ккал/сут"
         else:
             items.volumephys.text = ""
             items.volumeent.text = ""
@@ -338,10 +347,21 @@ class MyCalculatorApp(MDApp):
             items.k_dose.text = f"{k_dose} мл/сут"
         else:
             items.k_dose.text = ""
+
+        if items.kalz1.active:
+            kalz = 3.3
+            kalz_text = "глюконат"
+            items.kalz_text.text = f"Объём раствора кальция {kalz_text}а 10% (мл/сут)"
+        elif items.kalz2.active:
+            kalz = 1.1
+            kalz_text = "хлорид"
+            items.kalz_text.text = f"Объём раствора кальция {kalz_text}а 10% (мл/сут)"
         if items.ca_need.text != "" and items.mass.text != "":
-            ca_need = float(items.ca_need.text)
-            ca_dose = round(ca_need * mass * 3.3, 1)
-            items.ca_dose.text = f"{ca_dose} мл/сут"
+            for widget in ToggleButtonBehavior.get_widgets('kalz'):
+                if widget.active:
+                    ca_need = float(items.ca_need.text)
+                    ca_dose = round(ca_need * mass * kalz, 1)
+                    items.ca_dose.text = f"{ca_dose} мл/сут"
         else:
             items.ca_dose.text = ""
         if items.mg_need.text != "" and items.mass.text != "":
@@ -351,9 +371,9 @@ class MyCalculatorApp(MDApp):
         else:
             items.mg_dose.text = ""
 
-        if items.ugleneed.text != "" and items.mass.text != "":
+        if items.ugleneed.text != "" and items.mass.text != "" and items.ugle.text != "":
             ugleneed = float(items.ugleneed.text)
-            daydoseugle = round((mass * ugleneed * 1.44),1)
+            daydoseugle = round((mass * ugleneed * 1.44 - ugle),1)
             items.daydoseugle.text = f"{daydoseugle} г/сут"
         else:
             items.daydoseugle.text = ""
@@ -413,6 +433,25 @@ class MyCalculatorApp(MDApp):
         else:
             items.kkalparent.text = ""
             items.kkalsum.text = ""
+        check = 0
+        for item in items:
+            if isinstance(items[item], MDTextField) and items[item].text != "":
+                check += 1
+        if check == 37:
+            items.print_button.disabled = False
+            feelout = {'physneed': physneed, 'mass': mass, 'dayneed': dayneed, 'food': food,
+            'volumeonetime': volumeonetime, 'count': count, 'volumeent': volumeent, 'volumephys': volumephys,
+            'x1': x1, 'x2': x2, 'x3': x3, 'x4': x4, 'zhiry': zhiry, 'ugle': ugle, 'belki': belki, 'kkal': kkal,
+            'bolus': bolus, 'dayneedent': dayneedent, 'dosebelki': dosebelki, 'daydosebelki': daydosebelki, 'amino': amino,
+            'dosezhiry': dosezhiry, 'daydosezhiry': daydosezhiry, 'amulszhiry': amulszhiry,
+            'na_need': na_need, 'na_dose': na_dose, 'k_need': k_need, 'k_dose': k_dose,
+            'kalz': kalz, 'kalz_text': kalz_text, 'ca_need': ca_need, 'ca_dose': ca_dose, 'mg_need': mg_need, 'mg_dose': mg_dose,
+            'ugleneed': ugleneed, 'daydoseugle': daydoseugle, 'doseugle': doseugle, 'y1': y1, 'y2': y2, 'v1': v1, 'v2': v2,
+            'speed1': speed1, 'speed2': speed2, 'concgluk': concgluk, 'kkalparent': kkalparent, 'kkalsum': kkalsum}
+            return feelout
+        else:
+            items.print_button.disabled = True
+
 
 
 
@@ -615,7 +654,7 @@ class MyCalculatorApp(MDApp):
     def clear_calculator(self):
         items = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
         for item in items:
-            if isinstance(items[item], MDCheckbox) == False:
+            if isinstance(items[item], MDTextField):
                 items[item].text = ""
 
     def clear_scale(self):
@@ -631,6 +670,38 @@ class MyCalculatorApp(MDApp):
         else:
             items.result.text = ""
             items.inter.text = ""
+    def print_parent(self):
+        items = self.root.ids.nav_manager.current_screen.ids.menu_manager.current_screen.ids
+        if items.print_button.disabled == False:
+            dt_now = datetime.now()
+            dt_print = dt_now.strftime('%Y-%m-%d_%H-%M-%S')
+            doc = DocxTemplate("shablon.docx")
+            feelout = self.count_parent()
+            doc.render(feelout)
+            doc.save(f"doc/Лист парентерального питания {dt_print}.docx")
+
+            if platform == 'android':
+                from jnius import cast
+                from jnius import autoclass
+                if USE_SDL2:
+                    PythonActivity = autoclass('org.kivy.android.PythonActivity')
+                else:
+                    PythonActivity = autoclass('org.renpy.android.PythonActivity')
+                Intent = autoclass('android.content.Intent')
+                String = autoclass('java.lang.String')
+                Uri = autoclass('android.net.Uri')
+                File = autoclass('java.io.File')
+
+                shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.setType("*/*")
+                docFile = File(f"doc/Лист парентерального питания {dt_print}.docx")
+                uri = Uri.fromFile(docFile)
+                parcelable = cast('android.os.Parcelable', uri)
+                shareIntent.putExtra(Intent.EXTRA_STREAM, parcelable)
+
+                currentActivity = cast('android.app.Activity', PythonActivity.mActivity)
+                currentActivity.startActivity(shareIntent)
+
 
 if __name__ == '__main__':
     app = MyCalculatorApp()

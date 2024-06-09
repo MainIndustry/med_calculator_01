@@ -805,7 +805,8 @@ MDScreen:
                     MDCheckbox:
                         id: food1
                         group: "food"
-                        on_press: app.count_parent() ; food1.active = True    
+                        on_press: app.count_parent()
+                        disabled: True if food1.active == True else False
                         active: True
                     MDLabel:
                         text: "Грудное молоко"
@@ -814,7 +815,8 @@ MDScreen:
                     MDCheckbox:
                         id: food2
                         group: "food"
-                        on_press: app.count_parent() ; food2.active = True    
+                        on_press: app.count_parent()
+                        disabled: True if food2.active == True else False
                     MDLabel:
                         text: "Смесь для доношенных"
                         adaptive_height: True
@@ -822,7 +824,8 @@ MDScreen:
                     MDCheckbox:
                         id: food3
                         group: "food"
-                        on_press: app.count_parent() ; food3.active = True    
+                        on_press: app.count_parent()
+                        disabled: True if food3.active == True else False
                     MDLabel:
                         text: "Смесь для недоношенных"
                         adaptive_height: True
@@ -915,7 +918,7 @@ MDScreen:
                 Title:
                     text: "Расчёт суточного объема жировой эмульсии"
                 SubMenuTitle:
-                    text: "Расчетная доза (г/кг/сут)"
+                    text: "Расчетная доза (г/кг)"
                 MDTextField:
                     id: dosezhiry
                     mode: "filled"
@@ -969,7 +972,34 @@ MDScreen:
                     mode: "filled"
                     input_filter: 'float'
                     on_text: app.count_parent()
+
                 SubMenuTitle:
+                    text: "Выбор кальция:"
+                MDGridLayout:
+                    cols: 2
+                    adaptive_height: True
+                    spacing: "6dp"
+                    MDCheckbox:
+                        id: kalz1
+                        group: "kalz"
+                        on_press: app.count_parent()
+                        disabled: True if kalz1.active == True else False
+                        active: True
+                    MDLabel:
+                        text: "глюконата"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                    MDCheckbox:
+                        id: kalz2
+                        group: "kalz"
+                        on_press: app.count_parent()
+                        disabled: True if kalz2.active == True else False
+                    MDLabel:
+                        text: "хлорида"
+                        adaptive_height: True
+                        pos_hint: {"center_y": .5}
+                SubMenuTitle:
+                    id: kalz_text
                     text: "Объём раствора кальция глюконата 10% (мл/сут)"
                 MDTextField:
                     id: ca_dose
@@ -1020,7 +1050,8 @@ MDScreen:
                     MDCheckbox:
                         id: conc1
                         group: "conc"
-                        on_press: app.count_parent() ; conc1.active = True  
+                        on_press: app.count_parent()
+                        disabled: True if conc1.active == True else False
                         active: True
                     MDLabel:
                         text: "5% и 10%"
@@ -1029,7 +1060,8 @@ MDScreen:
                     MDCheckbox:
                         id: conc2
                         group: "conc"
-                        on_press: app.count_parent() ; conc2.active = True  
+                        on_press: app.count_parent()
+                        disabled: True if conc2.active == True else False
                     MDLabel:
                         text: "5% и 40%"
                         adaptive_height: True
@@ -1037,7 +1069,8 @@ MDScreen:
                     MDCheckbox:
                         id: conc3
                         group: "conc"
-                        on_press: app.count_parent() ; conc3.active = True                       
+                        on_press: app.count_parent()
+                        disabled: True if conc3.active == True else False
                     MDLabel:
                         text: "10% и 40%"
                         adaptive_height: True
@@ -1097,7 +1130,19 @@ MDScreen:
                     mode: "outlined"
                     readonly: True
 
-        BottomMenu:
+        MDNavigationBar:
+            MDNavigationItem:
+                on_release: app.clear_calculator()
+                MDNavigationItemLabel:
+                    text: "Очистить форму"
+                    pos_hint: {"center_x": .5, "center_y": 0}
+            MDNavigationItem:
+                id: print_button
+                on_release: app.print_parent()
+                disabled: True
+                MDNavigationItemLabel:
+                    text: "Заполнить документ"
+                    pos_hint: {"center_x": .5, "center_y": 0}
 
 <ScreenSilverman@MDScreen>:
     name: "silverman"
